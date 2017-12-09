@@ -1,0 +1,1650 @@
+<!--
+/**
+ * =============================================================================
+ *  Web前端编程实践指南
+ * =============================================================================
+ *
+ *  此文档用于介绍编程过程中的一些模式和技巧
+ *
+ * =============================================================================
+ *
+ * @author dondevi
+ * @create 2014-05-27
+ *
+ * @update 2014-06-25 dondevi
+ * @update 2017-04-12 dondevi
+ * @update 2017-06-13 dondevi
+ *   1.Update content: js-global-module
+ *   2.Add reference: 20
+ *   3.Remove full stop from list item
+ *
+ */
+-->
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+  <link rel="shortcut icon" href="./assets/images/favicon_02.png" type="image/x-icon">
+  <title>Web前端编程实践指南</title>
+  <link rel="stylesheet" href="./assets/styles/main.css">
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-31356319-2', 'auto'); ga('send', 'pageview');
+  </script>
+  <script defer src="./assets/scripts/scrollspy.js"></script>
+  <script defer src="./assets/scripts/main.js"></script>
+</head>
+
+<body class="page-practice">
+
+  <a href="#header" class="sr-only">跳过导航</a>
+
+  <nav class="toc">
+    <a class="logo" href="#" title="Web前端编程实践指南">☜</a>
+    <ul class="menu">
+      <li class="menu-item">
+        <a href="#global">Global</a>
+        <ul class="menu-sub">
+          <li><a href="#global-decoupling">保持松耦合！</a></li>
+          <li><a href="#global-decoupling-html">HTML 解耦</a></li>
+          <li><a href="#global-decoupling-html">CSS 解耦</a></li>
+          <li><a href="#global-decoupling-html">Javascript 解耦</a></li>
+          <li><hr></li>
+          <li><a href="#global-compat-strategy">优雅降级 & 渐进增强</a></li>
+          <li><a href="#global-compat-html5">使旧版本 IE 支持 HTML5</a></li>
+          <li><a href="#global-compat-css-reset">使用 Normalize.css</a></li>
+          <li><a href="#global-compat-css-hack">避免使用 CSS Hack</a></li>
+          <li><a href="#global-compat-js-infer">避免特性/浏览器推断</a></li>
+          <li><a href="#global-compat-js-shim">Shim/Shiv 和 Polyfills</a></li>
+          <li><a href="#global-compat-modernizr">使用 Modernizr</a></li>
+        </ul>
+      </li>
+      <li class="menu-item">
+        <a href="#html">HTML</a>
+        <ul class="menu-sub">
+          <li><a href="#html-architecture-structure">结构设计</a></li>
+          <li><a href="#html-architecture-reducing">减少标签的使用</a></li>
+          <li><a href="#html-architecture-component">可重用及可组合的组件</a></li>
+          <li><a href="#html-architecture-component-modifier">组件修饰器</a></li>
+          <li><a href="#html-architecture-structrue-class">结构化类名</a></li>
+          <li><hr></li>
+          <li><a href="#html-accessible-skip">跳过导航</a></li>
+          <li><a href="#html-accessible-headline">标题嵌套</a></li>
+          <li><a href="#html-accessible-tabindex">避免添加 tabindex</a></li>
+          <li><a href="#html-accessible-focus-blur">不要写 onfocus="this.blur()"</a></li>
+          <li><a href="#html-accessible-aria">使用 ARIA</a></li>
+        </ul>
+      </li>
+      <li class="menu-item">
+        <a href="#css">CSS</a>
+        <ul class="menu-sub">
+          <li><a href="#css-efficiency-inherit">使用继承</a></li>
+          <li><a href="#css-efficiency-multi-selectors">使用多重选择器</a></li>
+          <li><a href="#css-efficiency-multi-statements">使用多重声明</a></li>
+          <li><a href="#css-efficiency-shorthand">使用简记属性</a></li>
+          <li><a href="#css-efficiency-important">避免 !important</a></li>
+          <li><hr></li>
+          <li><a href="#css-architecture-good">良好的 CSS 架构</a></li>
+          <li><a href="#css-architecture-oocss">参考 OOCSS</a></li>
+          <li><a href="#css-architecture-smacss">参考 SMACSS</a></li>
+          <li><hr></li>
+          <li><a href="#css-maintain-index">样式表索引</a></li>
+          <li><a href="#css-maintain-anchor">注释锚点</a></li>
+          <li><a href="#css-maintain-organization">代码组织</a></li>
+          <li><a href="#css-preprocessor">预处理</a></li>
+        </ul>
+      </li>
+      <li class="menu-item">
+        <a href="#js">Javascript</a>
+        <ul class="menu-sub">
+          <li><a href="#js-global-avoid">避免使用全局变量</a></li>
+          <li><a href="#js-global-accident">意外创建的全局变量</a></li>
+          <li><a href="#js-global-single">使用单全局变量</a></li>
+          <li><a href="#js-global-namespace">使用命名空间</a></li>
+          <li><a href="#js-global-closure">零全局变量</a></li>
+          <li><a href="#js-global-module">使用模块化（推荐）</a></li>
+          <li><hr></li>
+          <li><a href="#js-event-handle">事件处理</a></li>
+          <li><a href="#js-event-logic">隔离应用逻辑</a></li>
+          <li><a href="#js-event-distribute">不要分发事件对象</a></li>
+          <li><hr></li>
+          <li><a href="#js-config">将配置数据分离出来</a></li>
+          <li><a href="#js-error">抛出自定义错误</a></li>
+          <li><a href="#js-dont-move">不是你的对象不要动</a></li>
+        </ul>
+      </li>
+      <li class="menu-item menu-other">
+        <a href="javascript:;">其他规范</a>
+        <ul class="menu-sub">
+          <li class="title-codestyle"><a href="codestyle.html" target="_blank">✍ Web前端代码风格指南</a></li>
+          <!-- <li class="title-workflow"><a href="workflow.html" target="_blank">♨ Web前端工作流指南</a></li> -->
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <header class="masthead" id="header">
+    <div class="container">
+      <h1>Web前端编程实践指南</h1>
+      <p class="lead">HTML、CSS 和 Javascript 的编程模式和技巧</p>
+    </div>
+  </header>
+  <div class="section" id="golden-rule">
+    <div class="col">
+      <h2>前言 <sup><a href="#ref[1]" rel="appendix" title="《Maintainable Javascript》"><small>[1]</small></a></sup></h2>
+      <p>规范代码风格的目的，是使代码在多人协作的场景下具有一致性。关于如何解决一般性的问题，是不包括在风格规范中的，这是编程实践中的内容。</p>
+      <p>编程实践是另外一类规范。代码风格只关心代码的呈现，而编程实践关心代码的结果。你可以将编程实践看作是“秘方” —— 它们指引开发者以某种方式编写代码，以达到更好的结果。</p>
+      <p>如果你使用过一些设计模式，比如 MVC 中的观察者模式，那么你已经对编程实践很熟悉了。设计模式是编程实践的组成部分，专门解决软件组织方面的问题。</p>
+    </div>
+    <div class="col">
+      <br>
+      <br>
+      <blockquote>
+        <p>“构建软件设计的方法有两种：</p>
+        <ul>
+          <li>一种是把软件做得很简单以至于明显找不到缺陷；</li>
+          <li>另一种是把它做得很复杂以至于找不到明显的缺陷。”</li>
+        </ul>
+        <p>
+          &#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;
+          &#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;&#12288;
+          —— C.A.R. Hoare
+        </p>
+      </blockquote>
+    </div>
+  </div>
+
+  <div class="heading" id="global">
+    <h2>Global</h2>
+  </div>
+  <div class="heading-sub" id="global-decoupling">
+    <h3><em>- 解耦 -</em></h3>
+  </div>
+  <div class="section" id="global-decoupling-keep">
+    <div class="col">
+      <h4>保持松耦合！</h4>
+      <p>如果两个组件耦合太紧，则说明一个组件和另一个组件直接相关，这样的话，修改一个组件的逻辑，另外一个组件也需要修改。想象一下，如果一个系统包含上百个组件，那这简直就是一场噩梦。</p>
+      <p>在 Web 开发中，用户界面是由三个彼此隔离又相互作用的层定义的：</p>
+      <ul>
+        <li>HTML 用来定义页面的数据和语义</li>
+        <li>CSS 用来给页面添加颜色，创建视觉特征</li>
+        <li>Javascript 用来给页面添加行为，使其更具交互性</li>
+      </ul>
+      <p>当能够做到修改一个组件而不需要更改其他的组件时，就做到了松耦合。这对于代码的可维护性来说至关重要。</p>
+    </div>
+    <div class="col highlight middle">
+      <table class="decoupling-diagram">
+        <tbody>
+          <tr>
+            <td>CSS</td>
+            <td>Javascript</td>
+          </tr>
+          <tr>
+            <td colspan="2">HTML</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="section" id="global-decoupling-html">
+    <div class="col">
+      <h4>HTML 解耦</h4>
+      <ul>
+        <li>不建议在页面中用 <code>&lt;style&gt;</code> 和 <code>&lt;script&gt;</code> 标签来写 CSS 和 Javascript 代码，而使用文件引用</li>
+        <li>不建议在标签中用 <code>style</code> 和 <code>on*</code> 属性来写 样式 和 事件</li>
+        <li>不建议在 <code>&lt;a&gt;</code> 标签的 <code>href</code> 属性里写除了空语句之外的 Javascript 语句</li>
+      </ul>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="html">
+  <span class="c">&lt;!-- Good --&gt;</span>
+  <span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">href=</span><span class="s">"style.css"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"script.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;/head&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"javascript:;"</span><span class="nt">&gt;</span>...<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/body&gt;</span>
+
+  <span class="c">&lt;!-- Bad --&gt;</span>
+  <span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;style&gt;</span>
+      <span class="nt">body</span> <span class="p">{</span>...<span class="p">}</span>
+    <span class="nt">&lt;/style&gt;</span>
+    <span class="nt">&lt;script&gt;</span>
+      <span class="kd">function</span> <span class="nx">init</span> <span class="p">() {</span>...<span class="p">}</span>
+    <span class="nt">&lt;/script&gt;</span>
+  <span class="nt">&lt;/head&gt;</span>
+  <span class="nt">&lt;body</span> <span class="na">style=</span><span class="s">"background:#f7f7f7;"</span> <span class="na">onload=</span><span class="s">"init();"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"javascript:reload();"</span><span class="nt">&gt;</span>...<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/body&gt;</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="global-decoupling-css">
+    <div class="col">
+      <h4>CSS 解耦</h4>
+      <ul>
+        <li>尽量使用类选择器 <code>.</code> 而不使用 ID 选择器 <code>#</code></li>
+        <li>除非必要，不要写 <code>expression</code> 表达式</li>
+      </ul>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="css">
+  <span class="c">/* Good */</span>
+  <span class="nc">.box-block</span> <span class="p">{</span>
+    <span class="k">width</span><span class="o">:</span> <span class="sx">100%</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="c">/* Bad */</span>
+  <span class="nf">#box-block</span> <span class="p">{</span>
+    <span class="k">width</span><span class="o">:</span> <span class="n">expression</span><span class="p">(</span><span class="n">this</span><span class="o">.</span><span class="n">parentNode</span><span class="o">.</span><span class="n">clientWidth</span><span class="p">);</span>
+  <span class="p">}</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="global-decoupling-css">
+    <div class="col">
+      <h4>Javascript 解耦</h4>
+      <ul>
+        <li>尽量避免通过代码生成标签，它会让内容变得不易查找和编辑</li>
+        <li>建议在 HTML 中使用 <code>&lt;script type="text/html"&gt;</code> 来写模板</li>
+        <li>修改元素样式时，建议用改变类名来代替改变 CSS 规则</li>
+      </ul>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="html">
+  <span class="c">&lt;!-- HTML --&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"box"</span><span class="nt">&gt;</span><span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;script</span> <span class="na">id=</span><span class="s">"tmp"</span> <span class="na">type=</span><span class="s">"text/html"</span><span class="nt">&gt;</span>
+    &lt;h1&gt;A template content.&lt;/h1&gt;
+  <span class="nt">&lt;/script&gt;</span>
+</code>
+<code class="js">
+  <span class="c">/* Good */</span>
+  <span class="nx">box</span><span class="p">.</span><span class="nx">inerHTML</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElemnetById</span><span class="p">(</span><span class="s2">"tmp"</span><span class="p">)</span><span class="p">.</span><span class="nx">innerHTML</span><span class="p">;</span>
+  <span class="nx">box</span><span class="p">.</span><span class="nx">className</span> <span class="o">=</span> <span class="s2">"box-block"</span><span class="p">;</span>
+
+  <span class="c">/* Bad */</span>
+  <span class="nx">box</span><span class="p">.</span><span class="nx">inerHTML</span> <span class="o">=</span> <span class="s2">"&lt;h1&gt;A template content.&lt;/h1&gt;"</span><span class="p">;</span>
+  <span class="nx">box</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">cssText</span> <span class="o">=</span> <span class="s2">"width:100%"</span><span class="p">;</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="heading-sub" id="global-compat">
+    <h3><em>- 兼容 -</em></h3>
+  </div>
+  <div class="section" id="global-compat-strategy">
+    <div class="col">
+      <h4>优雅降级 & 渐进增强</h4>
+      <p>目前有两种浏览器兼容策略：</p>
+      <ul>
+        <li>优雅降级（Graceful Degradation, 1994）：一开始建构一個系統或网站时，就针对最新、最完善的环境來设计，然后针对其它环境进行测试与修复 <sup><a href="#ref[2]" rel="appendix" title="認識優雅降級與漸進增強">[2]</a></sup></li>
+        <li>渐进增强（Progressive Enhancement, 2003）：从最基本的功能出发，在保证系统在任何环境中的可用性的基础上，逐步增加功能及提高使用者体验</li>
+      </ul>
+      <p>“渐进增强”观点认为应关注于内容本身。<sup><a href="#ref[3]" rel="appendix" title="理解“渐进增强(Progressive Enhancement)”">[3]</a></sup></p>
+      <p>内容是我们建立网站的诱因。有的网站展示它，有的则收集它，有的寻求，有的操作，还有的网站甚至会包含以上的种种，但相同点是它们全都涉及到内容。</p>
+      <p>这使得“渐进增强”成为一种更为合理的设计范例。这也是它立即被 Yahoo! 所采纳并用以构建其 <a href="http://developer.yahoo.com/yui/articles/gbs/" target="_blank">“分级式浏览器支持 (Graded Browser Support)”</a> 策略的原因所在。</p>
+      <p>虽然如此，策略的使用在具体情况中应该视情况而定：</p>
+      <ul>
+        <li>用户范围窄，且集中在高端用户时，应采用优雅降级策略。比如内部OA系统</li>
+        <li>用户范围宽，面向大众群体时，应采用渐进增强策略</li>
+      </ul>
+    </div>
+  </div>
+  <div class="section" id="global-compat-html5">
+    <div class="col">
+      <h4>使旧版本 IE 支持 HTML5</h4>
+      <p>IE浏览器是前端开发者永远的痛，IE6/7/8 对于 HTML5 没有任何的支持。好消息是你可以引用一个很小的库，使得 IE6/7/8 支持 HTML5。</p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="html">
+  <span class="c">&lt;!--[if lt IE 9]&gt;</span>
+    <span class="c">&lt;script src="http://html5shim.googlecode.com/svn/trunk/html5.js">&lt;/script&gt;</span>
+  <span class="c">&lt;![endif]--&gt;</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="global-compat-css-reset">
+    <div class="col">
+      <h4>使用 Normalize.css</h4>
+      <p><a href="http://necolas.github.com/normalize.css/" target="_blank">Normalize.css</a> 是为抹平不同浏览器之间差异的基准CSS。是由 <a href="http://twitter.com/necolas" target="_blank">Nicolas Gallagher</a> 和 <a href="http://twitter.com/jon_neal" target="_blank">Jonathan Neal</a> 维护的项目，该项目已被 <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>、<a href="http://html5boilerplate.com/" target="_blank">HTML5 Boilerplate</a> 等多个顶尖的前端框架所用。<sup><a href="#ref[8]" rel="appendix" title="你真的了解HTML吗">[8]</a></sup></p>
+    </div>
+  </div>
+  <div class="section" id="global-compat-css-hack">
+    <div class="col">
+      <h4>避免使用 CSS Hack</h4>
+      <p>请先尝试使用其他的解决方法，比如分离一个针对 IE 的 CSS 文件。</p>
+      <p>虽然 Hack 很有诱惑力，可以当作浏览器检测或特殊的 CSS 过滤器，但它的行为太过于频繁，会长期伤害项目的效率和代码管理，所以应尽量避免。</p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="css">
+  <span class="c">/* Good */</span>
+  <span class="nc">.selector</span> <span class="p">{</span>
+    <span class="k">max-width</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="nc">.ie-6</span> <span class="nc">.selector</span> <span class="p">{</span>
+    <span class="k">width</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="c">/* Bad */</span>
+  <span class="nc">.selector</span> <span class="p">{</span>
+    <span class="k">max-width</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
+    <span class="k">_width</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
+  <span class="p">}</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="global-compat-js-infer">
+    <div class="col">
+      <h4>避免特性/浏览器推断</h4>
+      <p>“特性推断”根据一个特性的存在推断另一个特性是否存在。问题是，推断是假设并非事实，而且可能会导致维护性的问题。</p>
+      <p>你不能从一个特性的存在推断出另一个特性是否存在。最好的情况下两者有薄弱的联系，最坏的情况下两者根本没有直接关系。</p>
+      <p>除了不要进行推断，在实际开发中也应尽量使用特性检测来取代浏览器检测。</p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="js">
+  <span class="c">/* Good */</span>
+  <span class="kd">if</span> <span class="p">(</span><span class="nx">getElementById</span> <span class="k">in</span> <span class="nx">document</span><span class="p">) {</span>
+    <span class="nx">element</span> <span class="o">=</span> <span class="nx">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">isIE</span> <span class="o">=</span> <span class="nx">navigator</span><span class="p">.</span><span class="nx">userAgent</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s2">"MSIE"</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">-1</span><span class="p">;</span>
+
+  <span class="c">/* Bad */</span>
+  <span class="kd">if</span> <span class="p">(</span><span class="nx">document</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">) {</span> <span class="c">// 特性推断</span>
+    <span class="nx">element</span> <span class="o">=</span> <span class="nx">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">isIE</span> <span class="o">=</span> <span class="o">!!</span><span class="nx">document</span><span class="p">.</span><span class="nx">all</span><span class="p">;</span> <span class="c">// 浏览器推断</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="global-compat-js-shim">
+    <div class="col">
+      <h4>Shim/Shiv 和 Polyfills</h4>
+      <ul>
+        <li>Shim（有时候也称为 Shiv）是一个库，它将一个新的 API 引入到一个旧的环境中，而且仅靠旧环境中已有的手段实现 <sup><a href="#ref[4]" rel="appendix" title="HTML5逸事：一袋“腻子粉”的故事">[4]</a></sup></li>
+        <li>Polyfill 是一段代码（或者插件），提供了那些开发者们希望浏览器原生提供支持的功能</li>
+      </ul>
+      <p>Polyfill 就是一种用在浏览器 API 上的 Shim：</p>
+      <ul>
+        <li>Shim 是将不同 API 封装成一种 <sup><a href="#ref[5]" rel="appendix" title="Shim和Polyfill有什么区别?">[5]</a></sup><br>
+          （比如 <code title="API">$.ajax</code> 封装了 <code>XMLHttpRequest</code> 和 IE 的 <code>ActiveXObject</code>）
+        </li>
+        <li>Polyfill 特指 Shim 成的 API 是遵循标准的。<br>
+          （比如在 IE 中增加 <code title="API">window.XMLHttpRequest</code>，内部实现使用 <code>ActiveXObject</code>）
+        </li>
+      </ul>
+      <p>在实际中为了方便做对比，会特指 Shim 的 API 不是遵循标准的，而是自己设计的。</p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="js">
+  <span class="c">// 一段实现 querySelectorAll 的 Polyfill</span>
+  <span class="kd">if</span> <span class="p">(</span>!<span class="nx">document</span><span class="p">.</span><span class="nx">querySelectorAll</span><span class="p">) {</span>
+    <span class="nx">Element</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">querySelectorAll</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">q</span><span class="p">) {</span>
+      <span class="k">return</span> $<span class="p">(</span><span class="k">this</span>)<span class="p">.</span><span class="nx">find</span><span class="p">(</span>q)<span class="p">.</span><span class="nx">get</span><span class="p">();</span>
+    };
+    <span class="nx">document</span><span class="p">.</span><span class="nx">querySelectorAll</span> = <span class="nx">Element</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">querySelectorAll</span><span class="p">;</span>
+  }
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="global-compat-modernizr">
+    <div class="col">
+      <h4>使用 Modernizr</h4>
+      <p>作为一个开源的 JavaScript 库，<a href="http://modernizr.com/" target="_blank">Modernizr</a> 检测浏览器对 CSS3 或 HTML5 功能支持情况。 Modernizr 并非试图添加老版本浏览器不支持的功能，而是令你通过创建可选风格配置修改页面设计。 它也可以通过加载定制的脚本来模拟老版本浏览器不支持的功能。<sup><a href="#ref[6]" rel="appendix" title="使用Modernizr检测HTML5和CSS3浏览器支持功能">[6]</a></sup></p>
+      <p>只需要到 <a href="http://modernizr.com/download/" target="_blank">这个页面</a> 选中你打算使用的 HTML5 元素和 CSS3 属性，然后下载定制后的 Javascript 文件。最后在你的页面中引入这个 Javascript 文件，剩下的就交给 Modernizr 去做吧。</p>
+      <p>Modernizr 会根据浏览器的功能情况在页面的 <code>&lt;html&gt;</code> 标签上添加一组类；它也可轻松实现 JavaScript 解决方案，即人们熟知的 Polyfills。</p>
+      <p>Modernizr 简单易用，但不是万能的。 成功使用 Modernizr 很大程度上取决于你的 CSS 和 JavaScript 技能。</p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="html">
+  <span class="c">&lt;!-- HTML --&gt;</span>
+  <span class="c">&lt;!-- 根据浏览器支持的特性自动生成类名 --&gt;</span>
+  <span class="nt">&lt;html</span> <span class="na">class=</span><span class="s">"js no-touch cssgradients"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;script</span> <span class="na">src=</span><span class="s">"path/to/modernizr.js"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;/head&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+    <span class="c">&lt;!-- 已包含 HTML5 shiv，可以实现 IE 浏览器对 HTML5 标签的支持 --&gt;</span>
+    <span class="nt">&lt;header&gt;</span>
+      ...
+    <span class="nt">&lt;/header&gt;</span>
+  <span class="nt">&lt;/body&gt;</span>
+  <span class="nt">&lt;/html&gt;</span>
+</code>
+<code class="css">
+  <span class="c">/* CSS */</span>
+  <span class="nc">.no-js</span> <span class="nc">.glossy</span><span class="o">,</span>
+  <span class="nc">.no-cssgradients</span> <span class="nc">.glossy</span> <span class="p">{</span>
+      <span class="k">background</span><span class="o">:</span> <span class="n">url</span><span class="p">(</span><span class="s">images/glossybutton.png</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="nc">.cssgradients</span> <span class="nc">.glossy</span> <span class="p">{</span>
+      <span class="k">background-image</span><span class="o">:</span> <span class="n">linear</span><span class="o">-</span><span class="n">gradient</span><span class="p">(</span><span class="n">top</span><span class="o">,</span> <span class="n">#555</span><span class="o">,</span> <span class="n">#333</span><span class="p">);</span>
+  <span class="p">}</span>
+</code>
+<code class="js">
+  <span class="c">/* Javascript */</span>
+  <span class="nx">Modernizr</span><span class="p">.</span><span class="nx">load</span><span class="p">({</span>
+    <span class="nx">test</span><span class="p">:</span> <span class="nx">Modernizr</span>.<span class="nx">geolocation</span><span class="p">,</span>
+    <span class="nx">yep</span> <span class="p">:</span> <span class="s2">"geo.js"</span><span class="p">,</span>
+    <span class="nx">nope</span><span class="p">:</span> <span class="s2">"geo-polyfill.js"</span>
+  });
+</code>
+      </pre>
+    </div>
+  </div>
+
+
+  <div class="heading" id="html">
+    <h2>HTML</h2>
+  </div>
+  <div class="heading-sub" id="html-architecture">
+    <h3><em>- 架构 -</em></h3>
+  </div>
+  <div class="section" id="html-architecture-structure">
+    <div class="col">
+      <h4>结构设计</h4>
+      <p>HTML 不像 Javascript 和 CSS 那么精彩，其作用最被忽视，但它又是最基础的载体。HTML的难点在结构的设计上，需要稳定、灵活、友好、易理解。其实 HTML/CSS 完全受意识流控制。如何架构好，源于经验而非知识。<sup><a href="#ref[7]" rel="appendix" title="意识流">[7]</a></sup></p>
+      <ul>
+        <li>分离结构和内容</li>
+        <li>分离结构和样式</li>
+        <li>分离内容和样式</li>
+      </ul>
+      <p>HTML 的结构从某个方面来说依赖于类名的定义：</p>
+      <ul>
+        <li>内容层面的语义已经由标签和属性提供</li>
+        <li>类名不需要为机器或浏览者提供信息，它是面向开发者的</li>
+        <li>类名的主要目的是作为 CSS 和 JavaScript 的钩子</li>
+        <li>类名应该提供有用的信息给开发者</li>
+      </ul>
+      <p>太多人觉得HTML太简单，但它恰恰又是前端开发中最基础最重要的部分。HTML结构设计的合不合理，直接影响到代码易不易维护，灵不灵活，同时事关网页性能，协作效率。<sup><a href="#ref[8]" rel="appendix" title="你真的了解HTML吗">[8]</a></sup></p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="html">
+  <span class="c">&lt;!-- Good --&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"module"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;h2</span> <span class="na">class=</span><span class="s">"module-head"</span><span class="nt">&gt;</span>News<span class="nt">&lt;/h2&gt;</span>
+    <span class="nt">&lt;ol <span class="na">class=</span><span class="s">"module-list"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;li&gt;</span>First news title.<span class="nt">&lt;/li&gt;</span>
+      <span class="nt">&lt;li&gt;</span>Second news title.<span class="nt">&lt;/li&gt;</span>
+      ...
+    <span class="nt">&lt;/ol&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet...<span class="nt">&lt;/p&gt;</span> <span class="c">&lt;!-- 在 CSS 中设置 text-indent --&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet...<span class="nt">&lt;/p&gt;</span>
+    ...
+  <span class="nt">&lt;/div&gt;</span>
+
+  <span class="c">&lt;!-- Bad --&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"news"</span><span class="nt">&gt;</span> <span class="c">&lt;!-- 类名不应命名成内容相关的（结构-内容） --&gt;</span>
+    <span class="nt">&lt;h2</span> <span class="na">class=</span><span class="s">"red"</span><span class="nt">&gt;</span>News<span class="nt">&lt;/h2&gt;</span> <span class="c">&lt;!-- 类名不应命名成样式相关的（结构-样式） --&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"list"</span><span class="nt">&gt;</span> <span class="c">&lt;!-- 类名缺乏关联性 --&gt;</span>
+      <span class="nt">&lt;p&gt;</span>1. First news title.<span class="nt">&lt;/p&gt;</span> <span class="c">&lt;!-- 不应手写编号（结构-内容） --&gt;</span>
+      <span class="nt">&lt;p&gt;</span>2. Second news title.<span class="nt">&lt;/p&gt;</span>
+      ...
+    <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;p&gt;</span><span class="ni">&amp;nbsp;&amp;nbsp;</span>Lorem ipsum dolor sit amet...<span class="nt">&lt;/p&gt;</span> <span class="c">&lt;!-- 不应使用空格缩进（内容-样式） --&gt;</span>
+    <span class="nt">&lt;p&gt;</span><span class="ni">&amp;nbsp;&amp;nbsp;</span>Lorem ipsum dolor sit amet...<span class="nt">&lt;/p&gt;</span>
+    ...
+  <span class="nt">&lt;/div&gt;</span>
+
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="html-architecture-reducing">
+    <div class="col">
+      <h4>减少标签的使用</h4>
+      <p>标签使用的越少越好，事实也证实了确实如此。如果想创建具有良好结构的文档，那就需要考虑尽量少的使用标签。</p>
+      <ul>
+        <li>让文档体积更小，提高页面的下载速度</li>
+        <li>加快浏览器的解析，使页面更快地显示</li>
+        <li>让文档更简洁，更易维护</li>
+      </ul>
+      <p>当然我们所说的是必要与不必要，假如必须需要某种容器来布局，那是不可以省略的。</p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="html">
+  <span class="c">&lt;!-- Good --&gt;</span>
+  <span class="nt">&lt;img</span> <span class="na">class=</span><span class="s">"avatar"</span> <span class="na">src=</span><span class="s">"..."</span><span class="nt">&gt;</span>
+
+  <span class="c">&lt;!-- Bad --&gt;</span>
+  <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"avatar"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">"..."</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;/span&gt;</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="html-architecture-component">
+    <div class="col">
+      <h4>可重用及可组合的组件</h4>
+      <p>一个灵活且可重用的组件：</p>
+      <ul>
+        <li>既不能依赖另一个 DOM 结构</li>
+        <li>也不能依赖特定的元素类型</li>
+        <li>应该能适用于不同的容器并且很容易主题化</li>
+        <li>必要时，额外的元素（除了那些标记内容的元素）可以用来让组件更强壮。<a href="http://www.stubbornella.org/" target="_blank">Nicole Sullivan</a> 的 <a href="http://www.stubbornella.org/content/2010/06/25/the-media-object-saves-hundreds-of-lines-of-code/" target="_blank">媒体对象</a> 就是一个好例子</li>
+      </ul>
+      <p>这部分可以参考 <a href="http://v3.bootcss.com/components/" target="_blank">Bootstrap</a>。</p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="html">
+  <span class="c">&lt;!-- 一个面包屑组件（Bootstrap） --&gt;</span>
+  <span class="nt">&lt;ol</span> <span class="na">class=</span><span class="s">"breadcrumb"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;li&gt;</span><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"#"</span><span class="nt">&gt;</span>Home<span class="nt">&lt;/a&gt;</span><span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;li&gt;</span><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"#"</span><span class="nt">&gt;</span>Library<span class="nt">&lt;/a&gt;</span><span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"active"</span><span class="nt">&gt;</span>Data<span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;/ol&gt;</span>
+
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="html-architecture-component-modifier">
+    <div class="col">
+      <h4>组件修饰器</h4>
+      <p>从基础组件出发，通过修饰器，会产生有些许外观差异的变体组件。比如，不同颜色的背景或边框。有两种主要的模式被用来创建这些不同的组件：<sup><a href="#ref[9]" rel="appendix" title="关于语义化HTML以及前端架构的一点思考">[9]</a></sup></p>
+      <ul>
+        <li>“单类”模式，就是用一个类名来表示基础组件的变体</li>
+        <li>“多类”模式，就是用多个类名来表示基础组件的变体</li>
+      </ul>
+      <p>同 Bootstrap 一样，建议使用 <strong>“多类”模式</strong>。</p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="html">
+  <span class="c">&lt;!-- 单类模式 --&gt;</span>
+  <span class="nt">&lt;button</span> <span class="na">class=</span><span class="s">"btn"</span><span class="nt">&gt;</span>Default<span class="nt">&lt;/button&gt;</span>
+  <span class="nt">&lt;button</span> <span class="na">class=</span><span class="s">"btn-primary"</span><span class="nt">&gt;</span>Login<span class="nt">&lt;/button&gt;</span>
+
+  <span class="nc">.btn</span><span class="o">,</span> <span class="nc">.btn-primary</span> <span class="p">{</span> <span class="c">/* base styles */</span> <span class="p">}</span>
+  <span class="nc">.btn-primary</span> <span class="p">{</span> <span class="c">/* specific styles */</span> <span class="p">}</span>
+
+  <span class="c">&lt;!-- 多类模式 --&gt;</span>
+  <span class="nt">&lt;button</span> <span class="na">class=</span><span class="s">"btn"</span><span class="nt">&gt;</span>Default<span class="nt">&lt;/button&gt;</span>
+  <span class="nt">&lt;button</span> <span class="na">class=</span><span class="s">"btn btn-primary"</span><span class="nt">&gt;</span>Login<span class="nt">&lt;/button&gt;</span>
+
+  <span class="nc">.btn</span> <span class="p">{</span> <span class="c">/* base styles */</span> <span class="p">}</span>
+  <span class="nc">.btn-primary</span> <span class="p">{</span> <span class="c">/* specific styles */</span> <span class="p">}</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="html-architecture-structrue-class">
+    <div class="col">
+      <h4>结构化类名</h4>
+      <p>在创建组件及其变体时，有些类被用作组件边界（btn、btn-group），有些被用作修饰器（btn-primary），有些被用作子对象（btn-group-item）。很难弄清楚它们之间的关系，因为这些命名并没有清楚的揭示这些类的目的，没有统一的模式。</p>
+      <p>在这方面不得不提的是 <a href="http://bem.info/" target="_blank">BEM（Block, Element, Modifier）</a>。BEM 是一种方法论<em>（不是规范！）</em>，是由 <a href="http://yandex.ru/" target="_blank">Yandex</a> 团队提出的一种类命名方法。能让团队成员通过统一的命名模式：块（blocks）、元素（elements）、修饰符（modifiers）来进行合作和思想沟通。</p>
+      <p>先看看 <a href="http://www.zhihu.com/people/kejun" target="_blank">@kejun</a> 的 <a href="http://www.zhihu.com/question/21935157/answer/19836373" target="_blank">评论</a>：</p>
+      <blockquote>
+        <p>“我非常认同这种设计思想。但我还是不会照搬它的命名规则。太TM囧了！”</p>
+      </blockquote>
+      <p>所以在这里提出只是抛砖引玉的作用，具体应用有待商讨。</p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="html">
+  <span class="c">&lt;!-- BEM --&gt;</span>
+  <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">"block-name"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"block-name__element-name--modifier-name"</span><span class="nt">&gt;</span>...<span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"block-name__element-name"</span><span class="nt">&gt;</span>...<span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;/ul&gt;</span>
+
+  <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">"block-name--modifier-name"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"block-name--modifier-name__element-name--modifier-name"</span><span class="nt">&gt;</span>...<span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"block-name--modifier-name__element-name"</span><span class="nt">&gt;</span>...<span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;/ul&gt;</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="heading-sub" id="html-accessible">
+    <h3><em>- 可访问性 -</em></h3>
+  </div>
+  <div class="section" id="html-accessible-skip">
+    <div class="col">
+      <h4>跳过导航</h4>
+      <p>如果你的导航部分包含很多链接，并且在DOM结构上也是排列在主内容之前，那么建议在紧跟 <code>&lt;body&gt;</code> 标签之后添加一个 <em>跳过导航</em> 的链接。（<a href="http://a11yproject.com/posts/skip-nav-links/" target="_blank">这里解释了这样做的原因</a>）<sup><a href="#ref[10]" rel="appendix" title="Bootstrap3 - 可访问性">[10]</a></sup></p>
+      <br>
+      <p>关于可访问性可以在这里了解更多：</p>
+      <ul>
+        <li><a href="https://github.com/squizlabs/HTML_CodeSniffer" target="_blank">"HTML Codesniffer" bookmarklet for identifying accessibility issues</a></li>
+        <li><a href="http://a11yproject.com/" target="_blank">The A11Y Project</a></li>
+        <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/Accessibility" target="_blank">MDN accessibility documentation</a></li>
+      </ul>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="html">
+  <span class="c">&lt;!-- Good --&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"#content"</span> <span class="na">class=</span><span class="s">"sr-only"</span><span class="nt">&gt;</span>Skip to main content<span class="nt">&lt;/a&gt;</span>
+
+    <span class="nt">&lt;nav&gt;</span>
+      Multi navigation.
+    <span class="nt">&lt;/nav&gt;</span>
+
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"container"</span> <span class="na">id=</span><span class="s">"content"</span><span class="nt">&gt;</span>
+      The main page content.
+    <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;/body&gt;</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="html-accessible-headline">
+    <div class="col">
+      <h4>标题嵌套</h4>
+      <p>当标题嵌套时(<code>&lt;h1&gt;</code> - <code>&lt;h6&gt;</code>)，你的文档的主标题应该是<code>&lt;h1&gt;</code>。随后的标题逻辑上就应该使用<code>&lt;h2&gt;</code> - <code>&lt;h6&gt;</code>，这样，屏幕阅读器就可以构造出页面的内容列表。<sup><a href="#ref[10]" rel="appendix" title="Bootstrap3 - 可访问性">[10]</a></sup></p>
+      <p>从这里了解更多：<a href="http://squizlabs.github.io/HTML_CodeSniffer/Standards/Section508/" target="_blank">HTML CodeSniffer</a> 和 <a href="http://accessibility.psu.edu/headings" target="_blank">Penn State's AccessAbility</a>。</p>
+    </div>
+      <div class="col">
+        <div class="highlight">
+          <pre>
+  <code class="html">
+    <span class="c">&lt;!-- Good --&gt;</span>
+    <span class="nt">&lt;h1&gt;</span>Main title<span class="nt">&lt;/h1&gt;</span>
+
+    <span class="nt">&lt;h2&gt;</span>First level<span class="nt">&lt;/h2&gt;</span>
+    <span class="nt">&lt;h3&gt;</span>Second level<span class="nt">&lt;/h3&gt;</span>
+    ...
+    <span class="nt">&lt;h2&gt;</span>First level<span class="nt">&lt;/h2&gt;</span>
+    <span class="nt">&lt;h3&gt;</span>Second level<span class="nt">&lt;/h3&gt;</span>
+    ...
+  </code>
+          </pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="section" id="html-accessible-tabindex">
+    <div class="col">
+      <h4>避免添加 <code>tabindex</code></h4>
+      <p><code>tabindex</code> 的目的是解决屏幕阅读器读取内容的顺序问题。</p>
+      <p>例如有人把“忘记密码”的链接放在密码框后面，导致密码输入完毕后，按 tab 键的时候，不是在提交按钮上，而是“忘记密码”链接上，此时，就需要借助 <code>tabindex</code> 确定更好的阅读顺序（在WCAG 2.0中这实际上被称为“焦点顺序”）。</p>
+      <p>然而，在大部分情况下，<code>tabindex</code> 只会是事情变得更加混乱，会让用户走非正常逻辑。<sup><a href="#ref[11]" rel="appendix" title="盲人如何使用互联网的8个误区">[11]</a></sup></p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="html">
+  <span class="c">&lt;!-- Bad --&gt;</span>
+  <span class="nt">&lt;form&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">name=</span><span class="s">"password"</span> <span class="na">type=</span><span class="s">"password"</span> <span class="na">tabindex=</span><span class="s">"1"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">name=</span><span class="s">"password"</span> <span class="na">type=</span><span class="s">"password"</span> <span class="na">tabindex=</span><span class="s">"2"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"..."</span><span class="nt">&gt;</span>Forget password?<span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;button</span> <span class="na">type=</span><span class="s">"sublmit"</span> <span class="na">tabindex=</span><span class="s">"3"</span><span class="nt">&gt;</span><span class="nt">&lt;/button&gt;</span>
+  <span class="nt">&lt;/form&gt;</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="html-accessible-focus-blur">
+    <div class="col">
+      <h4>不要写 <code>onfocus="this.blur()"</code></h4>
+      <p>我们常用这样的代码来去除链接取得焦点时外围出现的虚线框，Google 一下，前面几十页谈的都是这个去除虚线框的技巧。<sup><a href="#ref[12]" title="盲人站长深恶痛绝的onfocus=”this.blur()" rel="appendix">[12]</a></sup></p>
+      <p>但我们也许以前从未想过：我们的这行代码给盲人用户们带来了巨大的困扰：这中断了盲人用户的Tab键路径，导致Tab光标无法聚焦页面的下一个控制器（链接、表单域、object、image map等）。</p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="css">
+  <span class="c">/* Good */</span>
+  <span class="nt">a</span><span class="o">:</span><span class="nd">focus</span> <span class="p">{</span>
+    <span class="k">outline</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+  <span class="p">}</span>
+</code>
+<code class="html">
+  <span class="c">&lt;!-- Good --&gt;</span>
+  <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"..."</span> <span class="na">hidefocus</span><span class="nt">&gt;</span>...<span class="nt">&lt;/a&gt;</span>
+
+  <span class="c">&lt;!-- Bad --&gt;</span>
+  <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"..."</span> <span class="na">onfocus=</span><span class="s">"this.blur()"</span><span class="nt">&gt;</span>...<span class="nt">&lt;/a&gt;</span>
+</code>
+<code class="js">
+  <span class="c">/* Bad */</span>
+  <span class="mx">$</span><span class="p">(</span><span class="s2">"a"</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s2">"focus"</span><span class="p">,</span> <span class="kd">function</span> <span class="p">() {</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">blur</span><span class="p">();</span>
+  <span class="p">});</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="html-accessible-aria">
+    <div class="col">
+      <h4>使用 ARIA</h4>
+      <p>WAI-ARIA（Web Accessibility Initiative’s Accessible Rich Internet Applications），全称“Web可访问性倡议之可访问的富互联网应用”，是一种技术规范，自称为“有桥梁作用的技术”。之所以这样说，是因为在HTML提供相应的语义功能之前，它可以用来填补一些语义上的空白。<sup><a href="#ref[13]" rel="appendix" title="weakow 概览">[13]</a></sup></p>
+      <p>使用 ARIA 地标角色可以将页面的主要区域清晰地划分出来，因为它的重要作用就是提高页面的可访问性，尤其是对屏幕阅读器的可访问性。此外，由于在 CSS 选择器中很容易使用 ARIA 的 <code>role</code> 属性，因此，它可以有效地避免像 <code>id="content"</code> 和 <code>id="sidebar"</code> 这样的属性。</p>
+      <p>地标角色只是 <a href="http://www.w3.org/TR/wai-aria/" target="_blank">ARIA规范</a> 众多特性的一种。不同屏幕阅读器对地标角色的支持情况见 <a href="http://html5accessibility.com/" target="_blankk">html5accessibility.com</a> 网站上的 <a href="http://www.html5accessibility.com/tests/landmarks.html" target="_blank">测试结果</a>。</p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="html">
+  <span class="c">&lt;!-- Good --&gt;</span>
+  <span class="nt">&lt;header</span> <span class="na">role=</span><span class="s">"banner"</span><span class="nt">&gt;</span>
+    <span class="c">&lt;!-- Logo, Nav... --&gt;</span>
+  <span class="nt">&lt;/header&gt;</span>
+</code>
+      </pre>
+    </div>
+  </div>
+
+
+
+  <div class="heading" id="css">
+    <h2>CSS</h2>
+  </div>
+  <div class="heading-sub" id="css-efficiency">
+    <h3><em>- 效率 -</em></h3>
+  </div>
+  <div class="section" id="css-efficiency-inherit">
+    <div class="col">
+      <h4>使用继承 <sup><small><a href="#ref[14]" rel="appendix" title="高效的，可维护的，组件化的CSS">[14]</a></small></sup></h4>
+      <p>使用继承可以避免重复的声明，常用于文字样式。</p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code>
+  <span class="c">/* Good */</span>
+  <span class="nt">body</span> <span class="p">{</span> <span class="k">font-family</span><span class="o">:</span> <span class="k">arial</span><span class="o">,</span> <span class="k">helvetica</span><span class="o">,</span> <span class="k">sans-serif</span><span class="p">;</span> <span class="p">}</span>
+
+  <span class="c">/* Bad */</span>
+  <span class="nt">p</span> <span class="p">{</span> <span class="k">font-family</span><span class="o">:</span> <span class="k">arial</span><span class="o">,</span> <span class="k">helvetica</span><span class="o">,</span> <span class="k">sans-serif</span><span class="p">;</span> <span class="p">}</span>
+  <span class="nt">div</span> <span class="p">{</span> <span class="k">font-family</span><span class="o">:</span> <span class="k">arial</span><span class="o">,</span> <span class="k">helvetica</span><span class="o">,</span> <span class="k">sans-serif</span><span class="p">;</span> <span class="p">}</span>
+  <span class="nc">.selector</span> <span class="p">{</span> <span class="k">font-family</span><span class="o">:</span> <span class="k">arial</span><span class="o">,</span> <span class="k">helvetica</span><span class="o">,</span> <span class="k">sans-serif</span><span class="p">;</span> <span class="p">}</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="css-efficiency-multi-selectors">
+    <div class="col">
+      <h4>使用多重选择器</h4>
+      <p>同样地，用多重选择器来避免重复代码。</p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code>
+  <span class="c">/* Good */</span>
+  <span class="nt">h1</span>, <span class="nt">h2</span>, <span class="nt">h3</span> <span class="p">{</span> <span class="k">color</span><span class="o">:</span> <span class="m">#333</span><span class="p">;</span> <span class="p">}</span>
+
+  <span class="c">/* Bad */</span>
+  <span class="nt">h1</span> <span class="p">{</span> <span class="k">color</span><span class="o">:</span> <span class="m">#333</span><span class="p">;</span> <span class="p">}</span>
+  <span class="nt">h2</span> <span class="p">{</span> <span class="k">color</span><span class="o">:</span> <span class="m">#333</span><span class="p">;</span> <span class="p">}</span>
+  <span class="nt">h3</span> <span class="p">{</span> <span class="k">color</span><span class="o">:</span> <span class="m">#333</span><span class="p">;</span> <span class="p">}</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="css-efficiency-multi-statements">
+    <div class="col">
+      <h4>使用多重声明</h4>
+      <p>为了更好的组织代码，不要将同一个选择器的样式声明散落在不同的地方。</p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code>
+  <span class="c">/* Good */</span>
+  <span class="nt">p</span> <span class="p">{</span>
+    <span class="k">margin</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+    <span class="k">background</span><span class="o">:</span> <span class="m">#ddd</span><span class="p">;</span>
+    <span class="k">color</span><span class="o">:</span> <span class="m">#666</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="c">/* Bad */</span>
+  <span class="nt">p</span> <span class="p">{</span> <span class="k">margin</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span> <span class="p">}</span>
+  <span class="nt">p</span> <span class="p">{</span> <span class="k">background</span><span class="o">:</span> <span class="m">#ddd</span><span class="p">;</span> <span class="p">}</span>
+  <span class="nt">p</span> <span class="p">{</span> <span class="k">color</span><span class="o">:</span> <span class="m">#666</span><span class="p">;</span> <span class="p">}</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="css-efficiency-shorthand">
+    <div class="col">
+      <h4>使用简记属性</h4>
+      <p>若要一条条地显式地指明所有属性，代码就会变得很冗长。使用简记规则的意义正在于此：彻底地减少这样负担。</p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code>
+  <span class="c">/* Good */</span>
+  <span class="nt">.selector</span> <span class="p">{</span>
+    <span class="nt">margin</span><span class="o">:</span> <span class="m">1rem</span><span class="p">;</span>
+    <span class="nt">font</span><span class="o">:</span> <span class="m">1rem</span><span class="o">/</span><span class="m">1.5</span> <span class="k">arial</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="c">/* Bad */</span>
+  <span class="nt">.selector</span> <span class="p">{</span>
+    <span class="nt">margin-top</span><span class="o">:</span> <span class="m">1rem</span><span class="p">;</span>
+    <span class="nt">margin-right</span><span class="o">:</span> <span class="m">1rem</span><span class="p">;</span>
+    <span class="nt">margin-bottom</span><span class="o">:</span> <span class="m">1rem</span><span class="p">;</span>
+    <span class="nt">margin-left</span><span class="o">:</span> <span class="m">1rem</span><span class="p">;</span>
+    <span class="nt">font-size</span><span class="o">:</span> <span class="m">1rem</span><span class="p">;</span>
+    <span class="nt">font-family</span><span class="o">:</span> <span class="k">arial</span><span class="p">;</span>
+    <span class="nt">line-height</span><span class="o">:</span> <span class="m">1.5</span><span class="p">;</span>
+  <span class="p">}</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="css-efficiency-important">
+    <div class="col">
+      <h4>避免 !important</h4>
+      <p><code>!important</code> 可以帮助我们轻松地覆盖样式，但是非到万不得已不要用 <code>!important</code>。<sup><a href="#ref[15]" rel="appendix" title="如何和何时使用CSS的!important">[15]</a></sup></p>
+      <p>如果你是出于懒惰使用 <code>!important</code>，为了避免例行的调试而滥用它，那么你（或者是那些后继开发你项目的人）将会深受其害。</p>
+      <p>如果你并非滥用只是有偶尔用一下!important，同样，你很快就会发现你的样式会难以维护。</p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code>
+  <span class="c">/* Good */</span>
+  <span class="nc">.selector.special</span> <span class="p">{</span>
+    <span class="k">background-color</span><span class="o">:</span> <span class="m">#ddd</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="c">/* Bad */</span>
+  <span class="nc">.selector</span> <span class="p">{</span>
+    <span class="k">background-color</span><span class="o">:</span> <span class="m">#ddd</span> <span class="cp">!important</span><span class="p">;</span>
+  <span class="p">}</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="heading-sub" id="architecture">
+    <h3><em>- 架构 -</em></h3>
+  </div>
+  <div class="section" id="css-architecture-good">
+    <div class="col">
+      <h4>良好的 CSS 架构 <sup><small><a href="#ref[16]" rel="appendix" title="CSS架构">[16]</a></small></sup></h4>
+      <ul>
+        <li>Predictable（可预见）</li>
+        <li>Reusable（可复用）</li>
+        <li>Maintainable（可维护）</li>
+        <li>Scalable（可扩展）</li>
+      </ul>
+    </div>
+    <div class="col">
+      <br>
+      <blockquote>
+        “Code for system, Not for pages.” —— Liang Bin Hsueh <sup><a href="#ref[17]" rel="appendix" title="漫談 CSS 架構方法">[17]</a></sup>
+      </blockquote>
+    </div>
+  </div>
+  <div class="section" id="css-architecture-oocss">
+    <div class="col">
+      <h4>参考 OOCSS</h4>
+      <p><a href="http://oocss.org/" target="_blank">OOCSS</a>（Object Oriented CSS）的概念最早是由 <a href="http://www.stubbornella.org/" target="_blank">Nicole Sullivan</a> 提出。</p>
+      <p>它有两个主要的原则：</p>
+      <ul>
+        <li>结构域外观分离</li>
+        <li>容器与内容分离</li>
+      </ul>
+      <p>Github 地址 <a href="https://github.com/stubbornella/oocss/wiki" target="_blank">在这里</a>。</p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="css">
+  <span class="c">/* Good */</span>
+  <span class="nc">.box</span> <span class="p">{</span>
+    <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
+    <span class="k">width</span><span class="o">:</span> <span class="m">400px</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="nc">.widget</span> <span class="p">{</span>
+    <span class="k">overflow</span><span class="o">:</span> <span class="k">auto</span><span class="p">;</span>
+    <span class="k">width</span><span class="o">:</span> <span class="m">500px</span><span class="p">;</span>
+    <span class="k">min-height</span><span class="o">:</span> <span class="m">200px</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="nc">.skin</span> <span class="p">{</span>
+    <span class="k">border</span><span class="o">:</span> <span class="k">solid</span> <span class="m">1px</span> <span class="m">#ccc</span><span class="p">;</span>
+    <span class="k">background</span><span class="o">:</span> <span class="n">linear-gradient</span><span class="p">(</span><span class="m">#ccc</span><span class="o">,</span> <span class="m">#222</span><span class="p">)</span><span class="p">;</span>
+    <span class="k">box-shadow</span><span class="o">:</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span> <span class="m">0</span><span class="o">,</span> <span class="m">0</span><span class="o">,</span> <span class="m">.5</span><span class="p">)</span> <span class="m">2px</span> <span class="m">2px</span> <span class="m">5px</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="c">/* Bad */</span>
+  <span class="nf">#box</span> <span class="p">{</span>
+    <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
+    <span class="k">width</span><span class="o">:</span> <span class="m">400px</span><span class="p">;</span>
+    <span class="k">border</span><span class="o">:</span> <span class="k">solid</span> <span class="m">1px</span> <span class="m">#ccc</span><span class="p">;</span>
+    <span class="k">background</span><span class="o">:</span> <span class="n">linear-gradient</span><span class="p">(</span><span class="m">#ccc</span><span class="o">,</span> <span class="m">#222</span><span class="p">)</span><span class="p">;</span>
+    <span class="k">box-shadow</span><span class="o">:</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span> <span class="m">0</span><span class="o">,</span> <span class="m">0</span><span class="o">,</span> <span class="m">.5</span><span class="p">)</span> <span class="m">2px</span> <span class="m">2px</span> <span class="m">5px</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="nf">#widget</span> <span class="p">{</span>
+    <span class="k">overflow</span><span class="o">:</span> <span class="k">auto</span><span class="p">;</span>
+    <span class="k">width</span><span class="o">:</span> <span class="m">500px</span><span class="p">;</span>
+    <span class="k">min-height</span><span class="o">:</span> <span class="m">200px</span><span class="p">;</span>
+    <span class="k">border</span><span class="o">:</span> <span class="k">solid</span> <span class="m">1px</span> <span class="m">#ccc</span><span class="p">;</span>
+    <span class="k">background</span><span class="o">:</span> <span class="n">linear-gradient</span><span class="p">(</span><span class="m">#ccc</span><span class="o">,</span> <span class="m">#222</span><span class="p">)</span><span class="p">;</span>
+    <span class="k">box-shadow</span><span class="o">:</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span> <span class="m">0</span><span class="o">,</span> <span class="m">0</span><span class="o">,</span> <span class="m">.5</span><span class="p">)</span> <span class="m">2px</span> <span class="m">2px</span> <span class="m">5px</span><span class="p">;</span>
+  <span class="p">}</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="css-architecture-smacss">
+    <div class="col">
+      <h4>参考 SMACSS</h4>
+      <p><a href="http://smacss.com/" target="_blank">SMACSS</a>（Scalable and Modular Architecture for CSS）是 <a href="http://www.snook.ca/" target="_blank">Jonathan Snook</a> 身经百战的经验总结。它没有库，而是 <a href="http://smacss.com/book/" target="_blank">一本书</a>，一套经验与思想。</p>
+      <p>它定义了五种样式类型：</p>
+      <ul>
+        <li><a href="http://smacss.com/book/type-base" target="_blank">Base</a>（基本），定义元素的默认样式。可以把 Normalize.css 放在这里</li>
+        <li><a href="http://smacss.com/book/type-layout" target="_blank">Layout</a>（布局），可以参考一下 <a href="http://susy.oddbird.net/" target="_blank">Susy</a> 这种基于列宽而又独立于模块的类名</li>
+        <li><a href="http://smacss.com/book/type-module" target="_blank">Module</a>（模块），定义模块时应全部使用类名选择器，不要使用元素选择器</li>
+        <li><a href="http://smacss.com/book/type-state" target="_blank">State</a>（状态），注意要与模块的修饰器区分</li>
+        <li><a href="http://smacss.com/book/type-theme" target="_blank">Theme</a>（皮肤）</li>
+      </ul>
+      <p>SMACSS 有两个核心目标：</p>
+      <ul>
+        <li>提升语义</li>
+        <li>降低对特定 HTML 结构的依赖</li>
+      </ul>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="css">
+  <span class="c">/* Base */</span>
+  <span class="nt">html</span><span class="o">,</span> <span class="nt">body</span> <span class="p">{</span> ... <span class="p">}</span>
+  <span class="nt">input</span><span class="o">[</span><span class="nt">type</span><span class="o">=</span><span class="s2">"text"</span><span class="o">]</span> <span class="p">{</span> ... <span class="p">}</span>
+  <span class="nt">a</span><span class="o">:</span><span class="nd">hover</span> <span class="p">{</span> ... <span class="p">}</span>
+
+  <span class="c">/* Layout */</span>
+  <span class="nc">.col-md-6</span> <span class="p">{</span> ... <span class="p">}</span>
+  <span class="nc">.col-sm-4</span> <span class="p">{</span> ... <span class="p">}</span>
+
+
+  <span class="c">/* Module */</span>
+  <span class="nc">.site-head</span> <span class="p">{</span> ... <span class="p">}</span>
+  <span class="nc">.site-foot</span> <span class="p">{</span> ... <span class="p">}</span>
+
+  <span class="c">/* State */</span>
+  <span class="nc">.active</span> <span class="p">{</span> ... <span class="p">}</span>
+  <span class="nc">.hide</span> <span class="p">{</span> ... <span class="p">}</span>
+
+  <span class="c">/* Theme */</span>
+  <span class="c">/* in module.css */</span>
+  <span class="nc">.mod</span> <span class="p">{</span> <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="nb">solid</span><span class="p">;</span> <span class="p">}</span>
+  <span class="c">/* in theme.css */</span>
+  <span class="nc">.mod</span> <span class="p">{</span> <span class="k">border-color</span><span class="o">:</span> <span class="nb">blue</span><span class="p">;</span> <span class="p">}</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="heading-sub" id="maintain">
+    <h3><em>- 维护 -</em></h3>
+  </div>
+  <div class="section" id="css-maintain-index">
+    <div class="col">
+      <h4>样式表索引</h4>
+      <p>样式表头部索引定义可以帮助你和其它人弄清楚该样式表文件的相关信息，它一般是一段格式化的CSS注释文本。<sup><a href="#ref[19]" rel="appendix" title="CSS书写标准及最佳实践">[19]</a></sup></p>
+      <ul>
+        <li>给出该css文件作者的相关信息</li>
+        <li>定义站点的布局（几栏，静态布局/动态布局）</li>
+        <li>记录文件版本号（利于多作者协作及将来更新）</li>
+      </ul>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="css">
+  <span class="c">/*</span>
+  <span class="c"> * STRUCTRUE</span>
+  <span class="c"> * -------------------------</span>
+  <span class="c"> * Page width: 980px</span>
+  <span class="c"> * ...</span>
+  <span class="c"> * </span>
+  <span class="c"> * CORLORS</span>
+  <span class="c"> * -------------------------</span>
+  <span class="c"> * Body background: #def455</span>
+  <span class="c"> * Main text:       #333</span>
+  <span class="c"> * Links:           #00600f</span>
+  <span class="c"> * Visited links:   #098761</span>
+  <span class="c"> * Hover links:     #aaf433</span>
+  <span class="c"> * ...</span>
+  <span class="c"> */</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="css-maintain-anchor">
+    <div class="col">
+      <h4>注释锚点</h4>
+      <p>在文档注释中命名锚点是用来规划整个CSS文件结构的（就好像书签一样），从而使整个CSS文件获得良好的组织。<sup><a href="#ref[19]" rel="appendix" title="CSS书写标准及最佳实践">[19]</a></sup></p>
+    </div>
+    <div class="col hightlight">
+      <pre>
+<code class="css">
+  <span class="c">/*</span>
+  <span class="c"> * STRUCTRUE ANCHOR</span>
+  <span class="c"> * -------------------------</span>
+  <span class="c"> * header    Header Definitions</span>
+  <span class="c"> *   menu      Global Site Navigation</span>
+  <span class="c"> * content   Main content</span>
+  <span class="c"> * footer    Footer Definitions</span>
+  <span class="c"> */</span>
+
+  <span class="c">/* header */</span>
+  ...
+  <span class="c">/* content */</span>
+  ...
+  <span class="c">/* footer */</span>
+  ...
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="css-maintain-organization">
+    <div class="col">
+      <h4>代码组织</h4>
+      <ul>
+        <li>逻辑上对不同的代码进行分离，而将关联的代码进行组合。例如，以组件为单位组织代码段</li>
+        <li>不同的组件的 CSS 尽量用不同的 CSS 文件（可以在 build 阶段用工具合并到一起）</li>
+        <li>如果使用了多个 CSS 文件，将其按照组件而非页面的形式分拆，因为页面会被重组，而组件只会被移动</li>
+      </ul>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="css">
+  <span class="c">/*</span>
+  <span class="c"> * Component section heading</span>
+  <span class="c"> */</span>
+  <span class="nc">.element</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+
+  <span class="c">/*</span>
+  <span class="c"> * Component section heading</span>
+  <span class="c"> *</span>
+  <span class="c"> * Sometimes you need to include optional context for the entire component. Do that up here if it's important enough.</span>
+  <span class="c"> */</span>
+  <span class="nc">.element</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+
+  <span class="c">/* Contextual sub-component or modifer */</span>
+  <span class="nc">.element-heading</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="css-preprocessor">
+    <div class="col">
+      <h4>预处理</h4>
+      <p>不同的CSS预处理有着不同的特性、功能以及语法。编码习惯应当根据使用的预处理程序进行扩展，以适应其特有的功能。推荐在使用SCSS时遵守以下指导。</p>
+      <ul>
+        <li>如果用到了预处理器（比如less），把一些公共的样式代码抽象成变量，例如颜色，字体等等</li>
+        <li>将嵌套深度限制在1级。对于超过2级的嵌套，给予重新评估。这可以避免出现过于详实的 CSS 选择器</li>
+        <li>避免大量的嵌套规则。当可读性受到影响时，将之打断。推荐避免出现多于20行的嵌套规则出现</li>
+        <li>始终将@extend语句放在声明块的第一行</li>
+        <li>如果可以的话，将 <code>@include</code> 语句放在声明块的顶部，紧接着 <code>@extend</code> 语句的位置</li>
+        <li>考虑在自定义函数的名字前加上x-或其它形式的前缀。这有助于避免将自己的函数和CSS的原生函数混淆，或函数命名与库函数冲突</li>
+      </ul>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="css">
+  <span class="nc">.selector-1</span> <span class="p">{</span>
+    <span class="k">@extend</span> <span class="nc">.other-rule</span><span class="o">;</span>
+    <span class="o">@</span><span class="nt">include</span> <span class="nt">clearfix</span><span class="o">();</span>
+    <span class="o">@</span><span class="nt">include</span> <span class="nt">box-sizing</span><span class="o">(</span><span class="nt">border-box</span><span class="o">);</span>
+    <span class="nt">width</span><span class="nd">:</span> <span class="nt">x-grid-unit</span><span class="o">(</span><span class="nt">1</span><span class="o">);</span>
+    <span class="o">//</span> <span class="nt">other</span> <span class="nt">declarations</span>
+  <span class="p">}</span>
+
+  <span class="c1">// Without nesting</span>
+  <span class="nc">.table</span> <span class="o">&gt;</span> <span class="nt">thead</span> <span class="o">&gt;</span> <span class="nt">tr</span> <span class="o">&gt;</span> <span class="nt">th</span> <span class="p">{</span> ... <span class="p">}</span>
+  <span class="nc">.table</span> <span class="o">&gt;</span> <span class="nt">thead</span> <span class="o">&gt;</span> <span class="nt">tr</span> <span class="o">&gt;</span> <span class="nt">td</span> <span class="p">{</span> ... <span class="p">}</span>
+
+  <span class="c1">// With nesting</span>
+  <span class="nc">.table</span> <span class="o">&gt;</span> <span class="nt">thead</span> <span class="o">&gt;</span> <span class="nt">tr</span> <span class="p">{</span>
+    <span class="o">&gt;</span> <span class="nt">th</span> <span class="p">{</span> ... <span class="p">}</span>
+    <span class="o">&gt;</span> <span class="nt">td</span> <span class="p">{</span> ... <span class="p">}</span>
+  <span class="p">}</span>
+</code>
+      </pre>
+    </div>
+  </div>
+
+
+  <div class="heading" id="js">
+    <h2>Javascript <sup><a href="#ref[1]" rel="appendix" title="《Maintainable Javascript》"><small>[1]</small></a></sup></h2>
+  </div>
+  <div class="heading-sub" id="js-global">
+    <h3><em>- 全局变量 -</em></h3>
+  </div>
+  <div class="section" id="js-global-avoid">
+    <div class="col">
+      <h4>避免使用全局变量</h4>
+      <p>随着代码的增长，全局变量毫无疑问的会导致一些非常重要的可维护性问题：</p>
+      <ul>
+        <li>命名冲突：当全局变量和全局函数越来越多的时候，发生命名冲突概率就会越来越大。各种变量，函数将会被重置，那么很多各种各样的BUG就会随之而来</li>
+        <li>代码的脆弱性：一个依赖于全局变量的函数即是深耦合于上下文环境之中。环境的变化就可能会导致函数的失效</li>
+        <li>难以测试：任何依赖于全局变量才能正常工作的函数，只有为其重新创建完整的全局变量才能正确的测试，然后，就木有然后了</li>
+      </ul>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="js">
+  <span class="c">/* Bad */</span>
+  <span class="kd">function</span> <span class="nx">sayColor</span><span class="p">() {</span>
+    <span class="nx">alert</span><span class="p">(</span><span class="nx">color</span><span class="p">);</span> <span class="c">// color 从哪里来？</span>
+  <span class="p">}</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="js-global-accident">
+    <div class="col">
+      <h4>意外创建的全局变量</h4>
+      <p>Javascript 中有很多陷阱，会使我们不小心就创建了全局变量。因为意外创建全局变量并不会引起报错，有时很难察觉到。</p>
+      <p>这时，我们应该使用 <a href="http://www.jslint.com/" target="_blank">JSLint</a> 和 <a href="http://www.jshint.com/" target="_blank">JSHint（推荐）</a> 来检查代码。</p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="js">
+  <span class="c">/* Bad */</span>
+  <span class="kd">function</span> <span class="nx">doSomething</span><span class="p">() {</span>
+    <span class="kd">var</span> <span class="nx">count</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+        <span class="nx">name</span> <span class="o">=</span> <span class="s2">"Nicholas"</span><span class="p">;</span> <span class="c">// 意外创建的全局变量</span>
+    ...
+  <span class="p">}</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="js-global-single">
+    <div class="col">
+      <h4>使用单全局变量</h4>
+      <p>依赖尽可能少的全局变量是一个好方法。单全局变量模式已经在各种流行的库中广泛使用了：</p>
+      <ul>
+        <li>jQuery 定义了 <code>$</code> 和 <code>jQuery</code> 全局对象</li>
+        <li>YUI 定义了 <code>YUI</code> 全局对象</li>
+        <li>Dojo 定义了 <code>dojo</code> 全局对象</li>
+        <li>Closure 定义了 <code>goog</code> 全局对象</li>
+      </ul>
+      <p>“单全局变量”的意思是，这个全局对象名是唯一的（不会导致冲突），并将所有功能代码都挂载到这个全局对象上。因此每个可能的全局变量，都变成这个唯一全局对象的属性，从而不会创建多个全局变量。</p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="js">
+  <span class="c">/* Good */</span>
+  <span class="c">// 单全局变量</span>
+  <span class="kd">var</span> <span class="nx">global</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">doSomething</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span>) {</span>...<span class="p">},</span>
+    <span class="nx">doSomethingElse</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span>) {</span>...<span class="p">}</span>
+  <span class="p">};</span>
+
+  <span class="c">/* Bad */</span>
+  <span class="c">// 暴露在全局环境下</span>
+  <span class="kd">var</span> <span class="nx">doSomething</span> <span class="p">=</span> <span class="kd">function</span><span class="p">(</span>) {</span>...<span class="p">}</span>
+  <span class="kd">var</span> <span class="nx">doSomethingElse</span> <span class="p">=</span> <span class="kd">function</span><span class="p">(</span>) {</span>...<span class="p">}</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="js-global-namespace">
+    <div class="col">
+      <h4>使用命名空间</h4>
+      <p>即使代码只有一个全局对象，也存在着全局污染的可能性。大多数使用单全局变量模式的项目同样包含“命名空间”的概念。</p>
+      <p>“命名空间”是简单的通过全局对象的单一属性表示的功能性分组。将功能按照命名空间进行分组，可以让你的单全局对象变得井然有序。</p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="js">
+  <span class="c">/* Good */</span>
+  <span class="kd">var</span> <span class="nx">global</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="c">// 命名空间</span>
+    <span class="nx">myNamespace</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">ns</span><span class="p">) {</span>
+      <span class="nx">doSomething</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span>) {</span>...<span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nx">yourNamespace</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">ns</span><span class="p">) {</span>
+      <span class="nx">doSomething</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span>) {</span>...<span class="p">}</span> <span class="c">// 不会冲突</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+
+  <span class="c">/* Bad */</span>
+  <span class="kd">var</span> <span class="nx">global</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">doSomething</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span>) {</span>...<span class="p">},</span>
+    ...
+    <span class="c">// 很长的代码</span>
+    ...
+    <span class="nx">doSomething</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span>) {</span>...<span class="p">}</span> <span class="c">// 别人不小心造成的命名冲突</span>
+  <span class="p">};</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="js-global-closure">
+    <div class="col">
+      <h4>零全局变量</h4>
+      <p>通过闭包我们可以实现零全局变量。这种方法应用场景不多，最常见的情形就是一段不会被其他代码访问的完全独立的代码。之所以存在这种情形，是因为所有所需的代码都会合并到一个文件。</p>
+      <ul>
+        <li>通过传人参数，这段代码可以做到不需要直接引用任何全局变量</li>
+        <li>通过设置为严格模式，可以避免创建全局变量</li>
+      </ul>
+      <p>这种称之为“函数包装器（function wrapper）”的代码片段,可用于任何不需要创建全局对象的场景：</p>
+      <ul>
+        <li>代码非常短</li>
+        <li>不需要和其他代码产生交互</li>
+      </ul>
+      <p>以下场景不适合使用零全局变量的方式：</p>
+      <ul>
+        <li>代码被其他的代码所依赖</li>
+        <li>代码需要在运行时被不断扩展或修改</li>
+      </ul>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="js">
+  <span class="c">/* Good */</span>
+  <span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">win</span><span class="p">) {</span>
+
+    <span class="s2">"use strict"</span><span class="p">;</span>
+
+    <span class="kd">var</span> <span class="nx">doc</span> <span class="o">=</span> <span class="nx">win</span><span class="p">.</span><span class="nx">document</span><span class="span p">;</span>
+
+    ...
+
+  <span class="p">})(</span><span class="nx">window</span><span class="p">);</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="js-global-module">
+    <div class="col">
+      <h4>使用模块化（推荐）</h4>
+      <p>现在已经出现了许多前端模块化的规范：<sup><a href="#ref[20]" rel="appendix" title="从发展历史理解 ES6 Module">[20]</a></sup></p>
+      <ul>
+        <li><a href="http://www.commonjs.org/" target="_blank">CommonJS</a> （Common JavaScript）是 <a href="https://code.google.com/p/bravojs/" target="_blank">BravoJS</a> 在推广过程中对模块定义的规范化产出</li>
+        <li><a href="https://github.com/amdjs/amdjs-api/wiki/AMD-(%E4%B8%AD%E6%96%87%E7%89%88)" target="_blank">AMD</a>（Asynchronous Module Definition）是 <a href="http://www.requirejs.org/" target="_blank">RequireJS</a> 在推广过程中对模块定义的规范化产出</li>
+        <li><a href="https://github.com/seajs/seajs/issues/242" target="_blank">CMD</a>（Common Module Definition）是 <a href="http://seajs.org/docs/" target="_blank">SeaJS</a> 在推广过程中对模块定义的规范化产出</li>
+        <li><a href="https://github.com/umdjs/umd" target="_blank">UMD</a> （Universal Module Definition）则 <a href="" target="_blank"></a> 希望提供一个前后端跨平台的解决方案</li>
+        <li>...</li>
+      </ul>
+      <!-- <p>推荐使用 <strong>SeaJS 的 CMD 规范</strong>，AMD 与 CMD 的区别 <a href="http://zhi.hu/FQ7U" target="_blank">在这里</a>。</p> -->
+      <p>推荐使用 <strong>ES6</strong> 的 <a href="http://es6.ruanyifeng.com/#docs/module" target="_blank">Module 语法</a>：<code>import</code> 和 <code>export</code>。</p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="js">
+  <span class="c">/* Good */</span>
+  <span class="c">// 模块化（sea.js）</span>
+  <span class="nx">define</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">require</span><span class="p">,</span> <span class="nx">exports</span><span class="p">,</span> <span class="nx">module</span><span class="p">) {</span>
+    ...
+    <span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+      ...
+    <span class="p">};</span>
+  <span class="p">});</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="heading-sub" id="js-event">
+    <h3><em>- 事件 -</em></h3>
+  </div>
+  <div class="section" id="js-event-handle">
+    <div class="col">
+      <h4>事件处理</h4>
+      <p>大多数前端工程师需要花费很多时间来编写和修改事件处理程序。遗憾的是，在 Javascript 诞生之初，这部分内容并未受太多重视。甚至当开发者们热衷于将传统的软件架构概念融入到 Javascript 里时，事件绑定仍然没有受到多大重视。</p>
+      <p>大多数与事件处理相关的代码和环境紧紧耦合在一起，导致可维护性很糟糕。为此我们应当采用适当的方法来避免。</p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="js">
+  <span class="c">/* Bad */</span>
+  <span class="nx">$</span><span class="p">(</span><span class="nx">element</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s2">"click"</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">event</span><span class="p">) {</span>
+    <span class="nx">element</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">left</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">clientX</span> <span class="o">+</span> <span class="s2">"px"</span><span class="p">;</span>
+    <span class="nx">element</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">top</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">clientY</span> <span class="o">+</span> <span class="s2">"px"</span><span class="p">;</span>
+  <span class="p">});</span>
+
+  <span class="c">/* Not so bad */</span>
+  <span class="kd">var</span> <span class="nx">handleClick</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">event</span><span class="p">) {</span>
+    <span class="nx">element</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">left</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">clientX</span> <span class="o">+</span> <span class="s2">"px"</span><span class="p">;</span>
+    <span class="nx">element</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">top</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">clientY</span> <span class="o">+</span> <span class="s2">"px"</span><span class="p">;</span>
+  <span class="p">});</span>
+
+  <span class="nx">$</span><span class="p">(</span><span class="nx">element</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s2">"click"</span><span class="p">,</span> <span class="nx">handleClick</span><span class="p">});</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="js-event-logic">
+    <div class="col">
+      <h4>隔离应用逻辑</h4>
+      <p>应用逻辑（application logic）是和应用相关的功能性代码，而不是和用户行为相关的。将应用逻辑从事件程序中抽离出来是一种最佳实践，因为它也许会在其他场景下运行：</p>
+      <ul>
+        <li>在其他事件中触发同样的逻辑</li>
+        <li>测试时需要直接触发，而不必通过模拟点击来触发</li>
+      </ul>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="js">
+  <span class="c">/* Not so good */</span>
+  <span class="kd">var</span> <span class="nx">myApp</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="c">// 事件处理</span>
+    <span class="nx">handleClick</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">event</span><span class="p">) {</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">moveElement</span><span class="p">(</span><span class="nx">event</span><span class="p">);</span>
+    <span class="p">},</span>
+    <span class="c">// 应用逻辑</span>
+    <span class="nx">moveElement</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">event</span><span class="p">) {</span>
+      <span class="nx">element</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">left</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">clientX</span> <span class="o">+</span> <span class="s2">"px"</span><span class="p">;</span>
+      <span class="nx">element</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">top</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">clientY</span> <span class="o">+</span> <span class="s2">"px"</span><span class="p">;</span>
+    <span class="p">},</span>
+  <span class="p">};</span>
+
+  <span class="c">// 事件绑定</span>
+  <span class="nx">$</span><span class="p">(</span><span class="nx">element</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s2">"click"</span><span class="p">,</span> <span class="nx">myApp</span><span class="p">.</span><span class="nx">hanldeClick</span><span class="p">);</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="js-event-distribute">
+    <div class="col">
+      <h4>不要分发事件对象</h4>
+      <p>应用逻辑不应当依赖于 <code>event</code> 对象来完成正确功能，原因如下：</p>
+      <ul>
+        <li>方法接口并没有表明哪些数据是必要的。好的 API 要更明确清楚</li>
+        <li>在测试时，不得不创建一个 <code>event</code> 对象作为参数传入</li>
+      </ul>
+      <p>最佳的办法是让事件处理程序使用 <code>event</code> 对象来处理事件，然后把其中需要的数据传给应用逻辑。</p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="js">
+  <span class="c">/* Good */</span>
+  <span class="kd">var</span> <span class="nx">myApp</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="c">// 事件处理</span>
+    <span class="nx">handleClick</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">event</span><span class="p">) {</span>
+      <span class="nx">event</span><span class="p">.</span><span class="nx">stopPropagation</span><span class="p">();</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">moveElement</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">clientX</span><span class="p">,</span> <span class="nx">event</span><span class="p">.</span><span class="nx">clientY</span><span class="p">);</span>
+    <span class="p">},</span>
+    <span class="c">// 应用逻辑</span>
+    <span class="nx">moveElement</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">) {</span> <span class="c">// 传入明确的参数</span>
+      <span class="nx">element</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">left</span> <span class="o">=</span> <span class="nx">x</span> <span class="o">+</span> <span class="s2">"px"</span><span class="p">;</span>
+      <span class="nx">element</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">top</span> <span class="o">=</span> <span class="nx">y</span> <span class="o">+</span> <span class="s2">"px"</span><span class="p">;</span>
+    <span class="p">},</span>
+  <span class="p">};</span>
+
+  <span class="c">// 事件绑定</span>
+  <span class="nx">$</span><span class="p">(</span><span class="nx">element</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s2">"click"</span><span class="p">,</span> <span class="nx">myApp</span><span class="p">.</span><span class="nx">hanldeClick</span><span class="p">);</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="heading-sub">
+    <h3><em>- 其他 -</em></h3>
+  </div>
+  <div class="section" id="js-config">
+    <div class="col">
+      <h4>将配置数据分离出来</h4>
+      <p>配置数据是应用中写死（hardcoded）的值，而数据是不应当影响指令的正常运行的。比如：</p>
+      <ul>
+        <li>URL</li>
+        <li>展现给用户的字符串</li>
+        <li>重复的值</li>
+        <li>设置（比如每页的配置项）</li>
+        <li>任何可能发生改变的值</li>
+      </ul>
+      <p>配置数据最好放在单独的文件中，以便清晰地分隔数据和应用逻辑。推荐使用 JSON 格式。</p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="js">
+  <span class="c">/* Bad */</span>
+  <span class="kd">function</span> <span class="nx">validat</span><span class="p">(</span><span class="nx">value</span><span class="p">) {</span>
+    <span class="kd">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">value</span><span class="p">) {</span>
+      <span class="nx">alert</span><span class="p">(</span><span class="s2">"Invalid value"</span><span class="p">);</span>
+      <span class="nx">location</span><span class="p">.</span><span class="nx">href</span> <span class="o">=</span> <span class="s2">"/errors/invalid.php"</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="c">/* Good */</span>
+  <span class="c">// 抽离数据</span>
+  <span class="kd">var</span> <span class="nx">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">MSG_INVALID</span><span class="p">:</span> <span class="s2">"Invalid value"</span><span class="p">,</span>
+    <span class="nx">URL_INVALID</span><span class="p">:</span> <span class="s2">"/errors/invalid.php"</span>
+  <span class="p">};</span>
+
+  <span class="kd">function</span> <span class="nx">validat</span><span class="p">(</span><span class="nx">value</span><span class="p">) {</span>
+    <span class="kd">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">value</span><span class="p">) {</span>
+      <span class="nx">alert</span><span class="p">(</span><span class="nx">MSG_INVALID</span><span class="p">);</span>
+      <span class="nx">location</span><span class="p">.</span><span class="nx">href</span> <span class="o">=</span> <span class="nx">URL_INVALID</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="c">// 放入文件中</span>
+  <span class="p">{</span>
+    <span class="s2">"MSG_INVALID"</span><span class="p">:</span> <span class="s2">"Invalid value"</span><span class="p">,</span>
+    <span class="s2">"URL_INVALID"</span><span class="p">:</span> <span class="s2">"/errors/invalid.php"</span>
+  <span class="p">}</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="js-error">
+    <div class="col">
+      <h4>抛出自定义错误</h4>
+      <p>编程语言有“创建”错误的能力确实令人迷惑。然而，Nicholas 大牛告诉我们，在积累了大量的经验之后，他已然很热衷于抛出自己的错误。</p>
+      <ul>
+        <li>如果所有的失败都是悄无声息的，那必将消耗大量时间才能发现，更不要说单独隔离修复了。所以，错误是开发者的朋友，而不是敌人</li>
+        <li>虽然 <code>throw</code> 可以抛出任何类型的值，但这会导致浏览器不兼容的问题，所以最好是抛出一个 <code>Error</code> 对象</li>
+        <li>抛出错误的好处是可以显示确切的调试信息，除了行号和列号，还可以包含任何需要的自定义信息。推荐在错误中包含函数名+失败原因</li>
+      </ul>
+      <p>关于何时抛出错误，有一些经验可以借鉴：</p>
+      <ul>
+        <li>一旦修复了一个很难调试的错误，尝试增加一两个自定义错误。当再次发生错误时，这将有助于解决问题</li>
+        <li>编写代码时，思考一下：“我希望[某些事情]不会发生，否则代码会一团糟”。这时，如果[某些事情]发生，就抛出一个错误</li>
+        <li>如果别人要使用自己的代码（特别是插件），思考一下他们使用的方式，在特定的情况下抛出错误</li>
+      </ul>
+      <p>ECMA-262 规范指出了7种错误类型。当不同错误条件发生时，可以帮助更好地处理错误。</p>
+      <ul>
+        <li><code>Error</code>：所有错误的基本类型，实际上不会被抛出</li>
+        <li><code>EvalError</code>：执行 <code>eval()</code> 发生错误时抛出</li>
+        <li><code>RangeError</code>：数字超出边界时抛出</li>
+        <li><code>ReferenceError</code>：对象不存在时抛出。如 <code>null.toString()</code></li>
+        <li><code>SyntaxError</code>：语法错误时抛出</li>
+        <li><code>Typerror</code>：变量不是期望的类型时抛出。如 <code>new 10</code></li>
+        <li><code>URIError</code>：给 <code>encodeURI()</code> 等函数传递非法字符串时抛出</li>
+      </ul>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="js">
+  <span class="c">/* Good */</span>
+  <span class="k">try</span> <span class="p">{</span>
+    <span class="c">// Some code tigger Error</span>
+  <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">ex</span><span class="p">) {</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">ex</span> <span class="k">instanceof</span> <span class="nx">TypeError</span><span class="p">) {</span>
+      <span class="c">// Handle TypeError</span>
+    <span class="p">}</span> <span class="k">else if</span> <span class="p">(</span><span class="nx">ex</span> <span class="k">instanceof</span> <span class="nx">ReferenceError</span><span class="p">) {</span>
+      <span class="c">// Handle ReferenceError</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p"> {</span>
+      <span class="c">// Handle other Error</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="js-dont-move">
+    <div class="col">
+      <h4>不是你的对象不要动</h4>
+      <p>当你的代码创建了这些对象时，你拥有这些对象。创建对象的代码也许没必要一定由你来写，但只要维护代码是你的责任，那么就是你拥有这些对象。比如，YUI 团队拥有该 <code>YUI</code> 对象，Dojo 团队拥有该 <code>dojo</code> 对象，即使原作者离开了，各自对应的团队仍然是这些对象的拥有者。</p>
+      <p>请牢记，如果你的代码没有创建这些对象，不要修改它们，包括：</p>
+      <ul>
+        <li>原生对象。（如 <code>Object</code>、<code>Array</code> 等）</li>
+        <li>DOM 对象。（如 <code>document</code> 等）</li>
+        <li>BOM 对象。（如 <code>location</code> 等）</li>
+        <li>类库的对象。（如 <code>jQuery</code> 等）</li>
+      </ul>
+      <p>对它们要做到：</p>
+      <ul>
+        <li>不覆盖方法</li>
+        <li>不新增方法</li>
+        <li>不删除方法</li>
+      </ul>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="js">
+  <span class="c">/* Bad */</span>
+  <span class="c">// 在DOM 对象上增加了方法</span>
+  <span class="nx">document</span><span class="p">.</span>sayImAwesome <span class="o">=</span> <span class="ku">function</span> <span class="p">() {</span>
+    <span class="k">slert</span><span class="p">(</span><span class="s2">"You're awesome."</span><span class="p">);</span>
+  }
+
+  <span class="c">// 在原生对象上增加了方法</span>
+  <span class="nx">Array</span><span class="p">.</span>prototype<span class="p">.</span>reverseSort <span class="o">=</span> <span class="ku">function</span> <span class="p">() {</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">sort</span><span class="p">()</span><span class="p">.</span><span class="nx">reverse</span><span class="p">();</span>
+  }
+
+  <span class="c">// 在库对象上增加了方法</span>
+  <span class="nx">YUI</span><span class="p">.</span>doSomething <span class="o">=</span> <span class="ku">function</span> <span class="p">() {</span>
+    ...
+  }
+</code>
+      </pre>
+    </div>
+  </div>
+
+
+  <footer class="footer">
+    <h3>References</h3>
+    <div class="footer-wrap footer-links">
+      <p class="ref" id="ref[1]">
+        <span class="ref-num">[1]</span>
+        <a href="http://jayli.github.io/maintainable.javascript/" target="_blank">《Maintainable Javascript》</a> —
+        <a class="ref-author" href="http://www.nczonline.net/blog/about/" target="_blank">@Nicholas</a>
+      </p>
+      <hr>
+      <p class="ref" id="ref[2]">
+        <span class="ref-num">[2]</span>
+        <a href="http://augus-blog.logdown.com/posts/143403-graceful_degradation_and_progressive_enhancement/" target="_blank">認識優雅降級與漸進增強</a> —
+        <a class="ref-author" href="http://augus-blog.logdown.com/" target="_blank">@Augus</a>
+      </p>
+      <p class="ref" id="ref[3]">
+        <span class="ref-num">[3]</span>
+        <sup><a class="ref-trans" href="http://ued.taobao.org/blog/2008/10/understanding-progressiveen-hancement-chs-translation/" target="_blank" title="理解“渐进增强(Progressive Enhancement)”">[译文]</a></sup>
+        <a href="http://www.alistapart.com/articles/understandingprogressiveenhancement" target="_blank">Understanding Progressive Enhancement</a> —
+        <a class="ref-author" href="http://www.alistapart.com/authors/g/aarongustafson" target="_blank">@Aaron Gustafson</a>
+      </p>
+      <p class="ref" id="ref[4]">
+        <span class="ref-num">[4]</span>
+        <a href="http://www.ituring.com.cn/article/details/766" target="_blank">HTML5逸事：一袋“腻子粉”的故事</a> —
+        <a class="ref-author" href="http://www.ituring.com.cn/users/81970" target="_blank">@李松峰</a>
+      </p>
+      <p class="ref" id="ref[5]">
+        <span class="ref-num">[5]</span>
+        <a href="http://www.zhihu.com/question/22129715/answer/21242550" target="_blank">Shim和Polyfill有什么区别?</a> —
+        <a class="ref-author" href="http://www.zhihu.com/people/goto100" target="_blank">@李靖威</a>
+      </p>
+      <p class="ref" id="ref[6]">
+        <span class="ref-num">[6]</span>
+        <a href="http://www.adobe.com/cn/devnet/dreamweaver/articles/using-modernizr.html" target="_blank">使用Modernizr检测HTML5和CSS3浏览器支持功能</a> —
+        <a class="ref-author" href="http://www.adobe.com/cn/devnet/author_bios/david_powers.html" target="_blank">@David Powers</a>
+      </p>
+      <hr>
+      <p class="ref" id="ref[7]">
+        <span class="ref-num">[7]</span>
+        <a href="http://hikejun.com/blog/2012/07/23/%E6%84%8F%E8%AF%86%E6%B5%81/" target="_blank">意识流</a> —
+        <a class="ref-author" href="http://hikejun.com/blog/" target="_blank">@kejun</a>
+      </p>
+      <p class="ref" id="ref[8]">
+        <span class="ref-num">[8]</span>
+        <a href="http://hikejun.com/blog/2010/03/19/%E4%BD%A0%E7%9C%9F%E7%9A%84%E4%BA%86%E8%A7%A3html%E5%90%97/" target="_blank">你真的了解HTML吗</a> —
+        <a class="ref-author" href="http://hikejun.com/blog/" target="_blank">@kejun</a>
+      </p>
+      <p class="ref" id="ref[9]">
+        <span class="ref-num">[9]</span>
+        <sup><a class="ref-trans" href="http://www.oschina.net/translate/about-html-semantics-front-end-architecture" target="_blank" title="关于语义化HTML以及前端架构的一点思考">[译文]</a></sup>
+        <a href="http://nicolasgallagher.com/about-html-semantics-front-end-architecture/" target="_blank">About HTML semantics and front-end architecture</a> —
+        <a class="ref-author" href="http://nicolasgallagher.com/" target="_blank">@Nicolas Gallagher</a>
+      </p>
+      <p class="ref" id="ref[10]">
+        <span class="ref-num">[10]</span>
+        <sup><a class="ref-trans" href="http://v3.bootcss.com/getting-started/#disable-responsive" target="_blank" title="Bootstrap3 - 可访问性">[译文]</a></sup>
+        <a href="http://getbootstrap.com/getting-started/#accessibility" target="_blank">Bootstrap3 - Accessibility</a> —
+        <a class="ref-author" href="http://getbootstrap.com/" target="_blank">@Bootstrap</a>
+      </p>
+      <p class="ref" id="ref[11]">
+        <span class="ref-num">[11]</span>
+        <sup><a class="ref-trans" href="http://www.zhangxinxu.com/wordpress/2013/03/8-myths-blind-people-use-internet/" target="_blank" title="盲人如何使用互联网的8个误区">[译文]</a></sup>
+        <a href="http://speckyboy.com/2013/02/04/myths-about-how-blind-people-use-the-internet/" target="_blank">8 Myths About How Blind People Use the Internet</a> —
+        <a class="ref-author" href="http://speckyboy.com/author/david-ball/" target="_blank">@David Ball</a>
+      </p>
+      <p class="ref" id="ref[12]">
+        <span class="ref-num">[12]</span>
+        <a href="http://ued.taobao.org/blog/2011/04/onfocus-this-blur/" target="_blank">盲人站长深恶痛绝的onfocus=”this.blur()”</a> —
+        <a class="ref-author" href="http://ued.taobao.org/blog/author/miaojing/" target="_blank">@妙净</a>
+      </p>
+      <p class="ref" id="ref[13]">
+        <span class="ref-num">[13]</span>
+        <a href="http://cwt.weakow.com/handbook/overview" target="_blank">weakow 概览</a> —
+        <a class="ref-author" href="http://cwt.weakow.com/" target="_blank">@weakow</a>
+      </p>
+      <hr>
+      <p class="ref" id="ref[14]">
+        <span class="ref-num">[14]</span>
+        <sup><a class="ref-trans" href="http://www.slideshare.net/jeannewoo/efficient-maintainable-css-2721388" target="_blank" title="高效的，可维护的，组件化的CSS">[译文]</a></sup>
+        <a href="http://www.slideshare.net/maxdesign/efficient-maintainable-css-presentation" target="_blank">Efficient, maintainable CSS</a> —
+        <a class="ref-author" href="http://www.slideshare.net/maxdesign" target="_blank">@Russ Weakley</a>
+      </p>
+      <p class="ref" id="ref[15]">
+        <span class="ref-num">[15]</span>
+        <sup><a class="ref-trans" href="http://www.w3cplus.com/css/the-important-css-declaration-how-and-when-to-use-it.html" target="_blank" title="如何和何时使用CSS的!important">[译文]</a></sup>
+        <a href="http://www.smashingmagazine.com/2010/11/02/the-important-css-declaration-how-and-when-to-use-it/" target="_blank">!important CSS Declarations: How and When to Use Them</a> —
+        <a class="ref-author" href="http://coding.smashingmagazine.com/author/louis-lazaris/?rel=author" target="_blank">@Louis Lazaris</a>
+      </p>
+      <p class="ref" id="ref[16]">
+        <span class="ref-num">[16]</span>
+        <sup><a class="ref-trans" href="http://www.w3cplus.com/css/css-architecture.html" target="_blank" title="CSS架构">[译文]</a></sup>
+        <a href="http://engineering.appfolio.com/2012/11/16/css-architecture/" target="_blank">CSS Architecture</a> —
+        <a class="ref-author" href="http://philipwalton.com/" target="_blank">@Philip Walton</a>
+      </p>
+      <p class="ref" id="ref[17]">
+        <span class="ref-num">[17]</span>
+        <a href="http://www.slideshare.net/kurotanshi/css-oocss-smacss-bem" target="_blank">漫談 CSS 架構方法</a> —
+        <a class="ref-author" href="http://kuro.tw" target="_blank">@Kuro Hsu</a>
+      </p>
+      <p class="ref" id="ref[18]">
+        <span class="ref-num">[18]</span>
+        <sup><a class="ref-trans" href="http://www.w3cplus.com/css/starting-css.html" target="_blank" title="开始编写CSS">[译文]</a></sup>
+        <a href="http://davidwalsh.name/starting-css" target="_blank">Starting to Write CSS</a> —
+        <a class="ref-author" href="http://krasimirtsonev.com/blog" target="_blank">@Krasimir Tsonev</a>
+      </p>
+      <p class="ref" id="ref[19]">
+        <span class="ref-num">[19]</span>
+        <sup><a class="ref-trans" href="http://www.imjqy.com/cssxhtml/css-writestandards-best-practices/comment-page-1" target="_blank" title="CSS书写标准及最佳实践">[译文]</a></sup>
+        <a href="http://www.dezinerfolio.com/2009/02/20/css-standards-best-practices" target="_blank">CSS Standards & Best Practices</a> —
+        <a class="ref-author" href="https://www.behance.net/navdeep" target="_blank">@Navdeep Raj</a>
+      </p>
+      <p class="ref" id="ref[20]">
+        <span class="ref-num">[20]</span>
+        <sup><a class="ref-trans" href="http://www.zcfy.cc/article/876" target="_blank" title="从发展历史理解 ES6 Module">[译文]</a></sup>
+        <a href="https://www.sitepoint.com/understanding-es6-modules-via-their-history" target="_blank">Understanding ES6 Modules via Their History</a> —
+        <a class="ref-author" href="http://www.eliasjames.com/" target="_blank">@Elias Carlston</a>
+      </p>
+    </div>
+  </footer>
+
+</body>
+</html>

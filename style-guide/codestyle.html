@@ -1,0 +1,1753 @@
+<!--
+/**
+ * =============================================================================
+ *  Web前端代码风格指南
+ * =============================================================================
+ *
+ *  此文档用于规范 Web 前端代码风格，包括 HTML、CSS 和 Javascript
+ *  代码及部分内容来源于 Bootstrap 中文网，其他内容参考写在文档底部
+ *
+ * =============================================================================
+ *
+ * @author dondevi
+ * @create 2014-05-27
+ *
+ * @update 2014-06-25 dondevi
+ * @update 2017-04-12 dondevi
+ * @update 2017-06-13 dondevi
+ *   1.Remove full stop from list item
+ *
+ */
+-->
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+  <link rel="shortcut icon" href="./assets/images/favicon_01.png" type="image/x-icon">
+  <title>Web前端代码风格指南</title>
+  <link rel="stylesheet" href="./assets/styles/main.css">
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-31356319-2', 'auto'); ga('send', 'pageview');
+  </script>
+  <script defer src="./assets/scripts/scrollspy.js"></script>
+  <script defer src="./assets/scripts/main.js"></script>
+</head>
+
+<body class="page-codestyle">
+
+  <a href="#header" class="sr-only">跳过导航</a>
+
+  <nav class="toc">
+    <a class="logo" href="#" title="Web前端代码风格指南">✍</a>
+    <ul class="menu">
+      <li class="menu-item">
+        <a href="#global">Global</a>
+        <ul class="menu-sub">
+          <li><a href="#global-indent">使用2个空格缩进</a></li>
+          <li><a href="#global-quotes">使用双引号</a></li>
+          <li><a href="#global-blank-line">适当添加空行</a></li>
+          <li><a href="#global-comment">文件头部的注释</a></li>
+          <li><a href="#global-editor-prefs">编辑器设置</a></li>
+        </ul>
+      </li>
+      <li class="menu-item">
+        <a href="#html">HTML</a>
+        <ul class="menu-sub">
+          <li><a href="#html-doctype">文档类型</a></li>
+          <li><a href="#html-lang">语言属性</a></li>
+          <li><a href="#html-encoding">字符编码</a></li>
+          <li><a href="#html-compatibility-mode">兼容模式</a></li>
+          <li><a href="#html-style-script">引入文件</a></li>
+          <li><hr></li>
+          <li><a href="#html-markup-rule">标签规则</a></li>
+          <li><a href="#html-semantic">标签语义化</a></li>
+          <li><hr></li>
+          <li><a href="#html-attr-rule">属性规则</a></li>
+          <li><a href="#html-attr-order">属性顺序</a></li>
+          <li><a href="#html-attr-boolean">布尔属性</a></li>
+        </ul>
+      </li>
+      <li class="menu-item">
+        <a href="#css">CSS</a>
+        <ul class="menu-sub">
+          <li><a href="#css-declar-rule">声明规则</a></li>
+          <li><a href="#css-declar-single">单行声明</a></li>
+          <li><a href="#css-declar-selectors">选择器</a></li>
+          <li><a href="#css-declar-order">声明顺序</a></li>
+          <li><hr></li>
+          <li><a href="#css-attr-rule">属性规则</a></li>
+          <li><a href="#css-attr-prefix">带前缀的属性</a></li>
+          <li><a href="#css-attr-multi">多重属性值</a></li>
+          <li><a href="#css-attr-shorthand">简写形式的属性</a></li>
+          <li><hr></li>
+          <li><a href="#css-naming">class 命名</a></li>
+          <li><a href="#css-import">不要使用 @import</a></li>
+          <li><a href="#css-media-queries">媒体查询的位置</a></li>
+        </ul>
+      </li>
+      <li class="menu-item">
+        <a href="#js">Javascript</a>
+        <ul class="menu-sub">
+          <li><a href="#js-rule">基本规则</a></li>
+          <li><a href="#js-suggest">其他建议</a></li>
+          <li><a href="#js-declare">声明</a></li>
+          <li><a href="#js-naming">命名</a></li>
+          <li><a href="#js-brace">花括号</a></li>
+          <li><a href="#js-parenthesis">圆括号</a></li>
+          <li><hr></li>
+          <li><a href="#js-string">字符串</a></li>
+          <li><a href="#js-number">数字</a></li>
+          <li><a href="#js-array">数组</a></li>
+          <li><a href="#js-object">对象</a></li>
+          <li><a href="#js-null-undefined">null 和 undefined</a></li>
+          <li><hr></li>
+          <li><a href="#js-switch">switch 语句</a></li>
+          <li><a href="#js-for">for 循环</a></li>
+          <li><a href="#js-for-in">for-in 循环</a></li>
+          <li><hr></li>
+          <li><a href="#js-comment-rule">注释规则</a></li>
+          <li><a href="#js-comment-single">单行注释</a></li>
+          <li><a href="#js-comment-doc">文档注释</a></li>
+        </ul>
+      </li>
+      <li class="menu-item menu-other">
+        <a href="javascript:;">其他规范</a>
+        <ul class="menu-sub">
+          <li class="title-practice"><a href="practice.html" target="_blank">☜ Web前端编程实践指南</a></li>
+          <!-- <li class="title-workflow"><a href="workflow.html" target="_blank">♨ Web前端工作流指南</a></li> -->
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <header class="masthead" id="header">
+    <div class="container">
+      <h1>Web前端代码风格指南</h1>
+      <p class="lead">编写灵活、稳定、高质量的 HTML、CSS 和 Javascript 代码</p>
+    </div>
+  </header>
+
+  <div class="section" id="golden-rule">
+    <div class="col">
+      <h2>前言</h2>
+      <p>有人说，编译器的规范叫做"语法规则"（grammar），这是程序员必须遵守的；而编译器忽略的部分，就叫"代码风格"（code style）。<sup><a href="#ref[1]">[1]</a></sup></p>
+      <p>程序员固然可以自由选择代码风格，但是好的代码风格有助于写出质量更高、错误更少、更易于维护的程序。</p>
+      <p>"代码风格"的选择不应该基于个人爱好、熟悉程度、打字工作量等因素，而要考虑如何尽量使代码清晰易读、减少出错。你选择的，不是你喜欢的风格，而是一种能够清晰表达你的意图的风格。</p>
+      <p>如果你发现本规范中有任何不足，敬请指正或参与贡献。</p>
+    </div>
+    <div class="col">
+      <br>
+      <br>
+      <blockquote>
+        <p>“永远遵循同一套编码规范。”</p>
+        <ul>
+          <li>严格执行一致认可的风格 <sup><a href="#ref[2]">[2]</a></sup></li>
+          <li>如果有疑议，可以使用现有的、通用的模式</li>
+          <li>别想着过早地优化代码。得先保证它们可读又可理解</li>
+          <li>无论多少人参与及贡献，所有代码都应如同一个人编写的一样</li>
+        </ul>
+      </blockquote>
+      <br>
+      <blockquote>
+        <p> “程序是给人读的，顺便让计算机执行。” —— Donald Knuth</p>
+        <p class="hide"> “Programs are meant to be read by humans and only incidentally for computers to execute.” —— Donald Knuth</p>
+      </blockquote>
+      <br>
+    </div>
+  </div>
+
+
+
+  <div class="heading" id="global">
+    <h2>Global</h2>
+  </div>
+  <div class="section" id="global-indent">
+    <div class="col">
+      <h4>使用2个空格缩进</h4>
+      <p>在项目的所有代码中，应该只有一个风格。在缩进的使用上，必须始终保持一致。使用空格来提高可读性。</p>
+      <ul>
+        <li>坚持使用适度的缩进，并保持对齐</li>
+        <li>永远不要在缩进时混用空格和制表符</li>
+        <li>不要使用制表符</li>
+        <li>在编辑器设置 <strong>软缩进</strong>（使用空格），并始终坚持这一选择</li>
+      </ul>
+    </div>
+  </div>
+  <div class="section" id="global-quotes">
+    <div class="col">
+      <h4>使用双引号</h4>
+      <p>请不厌其烦地使用 <strong>双引号</strong>，虽然有时使用单引号更方便。</p>
+      <ul>
+        <li>由于 C 语言的历史渊源，多数语言都使用双引号包含字符串。为了某种潜在的好处，最好与它们保持一致的风格</li>
+        <li>HTML 属性的定义确保全部使用双引号，绝不要使用单引号（会很难看）</li>
+        <li>CSS 属性选择器中的引号 <a href="http://mathiasbynens.be/notes/unquoted-attribute-values#css" target="_blank">只有在某些情况下是可选的</a> ，建议都加上双引号。不过属性值括号内的引号可以省略</li>
+        <li>JSON 格式规定使用双引号</li>
+      </ul>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="html">
+  <span class="c">&lt;!-- HTML --&gt;</span>
+  <span class="nt">&lt;h1</span> <span class="na">class=</span><span class="s">"hello"</span><span class="nt">&gt;</span>Hello world!<span class="nt">&lt;/h1&gt;</span>
+</code>
+<code class="css">
+  <span class="c">/* CSS */</span>
+  <span class="nc">.selector</span><span class="o">[</span><span class="nt">name</span><span class="o">=</span><span class="s2">"hello"</span><span class="o">]</span><span class="nd">:before</span> <span class="p">{</span> <span class="c">/* 这里的引号不要省略 */</span>
+    <span class="k">content</span><span class="o">:</span> <span class="sx">"Hello World!"</span><span class="p">;</span>
+    <span class="k">background</span><span class="o">:</span> <span class="sx">url(image.jpg)</span><span class="p">;</span> <span class="c">/* 这里的引号可以省略 */</span>
+    <span class="k">font-family</span><span class="o">:</span> <span class="sx">"Microsoft Yahei"</span><span class="p">;</span>
+  <span class="p">}</span>
+</code>
+<code class="javascript">
+  <span class="c">/* Javascript */</span>
+  <span class="kd">var</span> <span class="nx">hello</span> <span class="o">=</span> <span class="s2">"Hello World!"</span><span class="p">;</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="global-blank-line">
+    <div class="col">
+      <h4>适当添加空行</h4>
+      <p>代码看起来应当像一系列可读的段落，而不是一大段揉在一起的连续文本。</p>
+      <ul>
+        <li>在单行或多行注释之前</li>
+        <li>将无关联的代码隔开，将有关联的代码展现在一起</li>
+      </ul>
+      <p>具体情况需要自己把握，目的是为了更好地提升代码的可读性。</p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="js">
+  <span class="c">/* Good */</span>
+  <span class="kd">if</span> <span class="p">(</span><span class="nx">condition</span><span class="p">) {</span>
+
+    <span class="kd">for</span> <span class="p">(</span><span class="nx">condition1</span><span class="p">;</span> <span class="nx">condition2</span><span class="p">;</span> <span class="nx">condition3</span><span class="p">) {</span>
+      <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+      <span class="kd">var</span> <span class="nx">bar</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+      <span class="c">// a comment</span>
+      <span class="kd">if</span> <span class="p">(</span><span class="nx">condition</span><span class="p">) {</span>
+        <span class="k">alert</span><span class="p">(</span><span class="nx">foo</span><span class="p">);</span>
+      <span class="p">}</span> <span class="kd">else</span> <span class="p">{</span>
+        <span class="k">alert</span><span class="p">(</span><span class="nx">bar</span><span class="p">);</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="c">/* Bad */</span>
+  <span class="kd">if</span> <span class="p">(</span><span class="nx">condition</span><span class="p">) {</span>
+    <span class="kd">for</span> <span class="p">(</span><span class="nx">condition1</span><span class="p">;</span> <span class="nx">condition2</span><span class="p">;</span> <span class="nx">condition3</span><span class="p">) {</span>
+      <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+      <span class="kd">var</span> <span class="nx">bar</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+      <span class="c">// a comment</span>
+      <span class="kd">if</span> <span class="p">(</span><span class="nx">condition</span><span class="p">) {</span>
+        <span class="k">alert</span><span class="p">(</span><span class="nx">foo</span><span class="p">);</span>
+      <span class="p">}</span> <span class="kd">else</span> <span class="p">{</span>
+        <span class="k">alert</span><span class="p">(</span><span class="nx">bar</span><span class="p">);</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="global-comment">
+    <div class="col">
+      <h4>文件头部的注释</h4>
+      <p>良好的注释是非常重要的。请留出时间来描述组件（component）的工作方式、局限性和构建它们的方法。不要让你的团队其它成员来猜测一段不通用或不明显的代码的目的。</p>
+      <ul>
+        <li>HTML、CSS、Javascript 使用同样格式的文件注释</li>
+        <li>注释的风格应当简洁，并在代码库中保持统一</li>
+        <li>控制每行长度在合理的范围内，比如80个字符</li>
+        <!-- <li>使用注释从字面上将代码分隔为独立的部分</li> -->
+        <li>注释的大小写应当与普通句子相同，并且使用一致的文本缩进</li>
+        <li>对于较长的注释，务必书写完整的句子；对于一般性注解，可以书写简洁的短语</li>
+      </ul>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="css">
+  <span class="c">&lt;!-- (如果是 HTML 就加上这个)</span>
+  <span class="c">/**</span>
+  <span class="c"> * ===========================================================</span>
+  <span class="c"> *  文件标题</span>
+  <span class="c"> * ===========================================================</span>
+  <span class="c"> *</span>
+  <span class="c"> *  从这里开始写这个文件的简要说明。</span>
+  <span class="c"> *</span>
+  <span class="c"> *  当需要进行更细致的解释说明、提供文档文本时，较长的说明文本就很</span>
+  <span class="c"> *  有用了。这种长长的说明文本，可以包括示例 HTML、链接 等等其他你</span>
+  <span class="c"> *  认为重要或者有用的东西。</span>
+  <span class="c"> * </span>
+  <span class="c"> * ===========================================================</span>
+  <span class="c"> *</span>
+  <span class="c"> * @author (作者)</span>
+  <span class="c"> * @create (创建时间)</span>
+  <span class="c"> * </span>
+  <span class="c"> * @update (修改时间) (修改者)</span>
+  <span class="c"> *   1. (修改内容)</span>
+  <span class="c"> * @update (修改时间) (修改者)</span>
+  <span class="c"> *   ...</span>
+  <span class="c"> *</span>
+  <span class="c"> * @todo: 这个“‘需做’陈述”描述了一个接下来要去做的小工作。这种文本，</span>
+  <span class="c"> *       如果超长了的话，应该在80个半角字符（如英文）或40个全角字符</span>
+  <span class="c"> *       （如中文）后便换行，并且保持对齐。</span>
+  <span class="c"> */</span>
+  <span class="c">--&gt;</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="global-editor-prefs">
+    <div class="col">
+      <h4>编辑器配置</h4>
+      <p>将你的编辑器按照下面的配置进行设置，以避免常见的代码不一致和差异：</p>
+      <ul>
+        <li>用软缩进代替制表符</li>
+        <li>设置文件编码为 UTF-8</li>
+        <li>换行符使用 <code>lf</code>（Unix 风格）</li>
+        <li>在文件结尾添加一个空白行</li>
+        <li>保存文件时，删除尾部的空白符</li>
+      </ul>
+      <p>参照文档并将这些配置信息添加到项目的<code>.editorconfig</code>文件中。例如 <a href="https://github.com/twbs/bootstrap/blob/master/.editorconfig" target="_blank">Bootstrap 中的实例</a> 。更多信息请参考 <a href="http://editorconfig.org" target="_blank">EditorConfig</a> 。</p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="javascript">
+  <span class="c1"># editorconfig.org</span>
+
+  <span class="na">root</span> <span class="o">=</span> <span class="s">true</span>
+
+  <span class="k">[*]</span>
+  <span class="na">charset</span> <span class="o">=</span> <span class="s">utf-8</span>
+  <span class="na">indent_size</span> <span class="o">=</span> <span class="s">2</span>
+  <span class="na">end_of_line</span> <span class="o">=</span> <span class="s">lf</span>
+  <span class="na">indent_style</span> <span class="o">=</span> <span class="s">space</span>
+  <span class="na">insert_final_newline</span> <span class="o">=</span> <span class="s">true</span>
+  <span class="na">trim_trailing_whitespace</span> <span class="o">=</span> <span class="s">true</span>
+</code>
+      </pre>
+    </div>
+  </div>
+
+
+
+  <div class="heading" id="html">
+    <h2>HTML</h2>
+  </div>
+  <div class="heading-sub" id="html-head">
+    <h3><em>- 头部 -</em></h3>
+  </div>
+  <div class="section" id="html-doctype">
+    <div class="col">
+      <h4>文档类型</h4>
+      <p>在HTML5出现之前，使用DOCTYPE不仅需要在多个版本之间作出选择，而且每一个版本的代码都很长，很难记忆。所以，请始终使用简洁的 HTML5 Doctype。</p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="html">
+  <span class="cp">&lt;!DOCTYPE html&gt;</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="html-lang">
+    <div class="col">
+      <h4>语言属性</h4>
+      <p>根据 HTML5 规范：</p>
+      <blockquote>
+        <p>强烈建议为 html 根元素指定 lang 属性，从而为文档设置正确的语言。这将有助于语音合成工具确定其所应该采用的发音，有助于翻译工具确定其翻译时所应遵守的规则等等。</p>
+      </blockquote>
+      <p>语言属性可以指明地区，其中与中文相关的有四个：<sup><a href="$ref[5]">[5]</a></sup></p>
+      <ul>
+        <li><code>zh-CN</code>（中国）</li>
+        <li><code>zh-TW</code>（台湾）</li>
+        <li><code>zh-HK</code>（香港）</li>
+        <li><code>zh-SG</code>（新加坡）</li>
+      </ul>
+      <p>如果需要指定使用繁体中文，应该使用 <code>zh-Hant</code>，毕竟使用繁体的不止一个地区，台湾和香港都使用繁体。要指定简体中文，则使用 <code>zh-Hans</code>。</p>
+      <p>声明语言有利于搜索引擎优化。将页面语言声明为中文有利于网站在中文搜索引擎中的排名。百度是典型的中文搜索引擎，在其索引中，中文网站的权重远高于其他语言（包括英文）的网站。</p>
+      <p>更多关于 <code>lang</code> 属性的知识可以从 <a href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-html-element" target="_blank">此规范</a> 中了解，这里列出了 <a href="http://reference.sitepoint.com/html/lang-codes" target="_blank">语言代码表</a> 。</p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="html">
+  <span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">"zh-CN"</span><span class="nt">&gt;</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="html-encoding">
+    <div class="col">
+      <h4>字符编码</h4>
+      <p>通过明确声明字符编码，能够确保浏览器快速并容易的判断页面内容的渲染方式。这样做的好处是，可以避免在 HTML 中使用字符实体标记（character
+        entity），从而全部与文档编码一致（一般采用 UTF-8 编码）。</p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="html">
+  <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"UTF-8"</span><span class="nt">&gt;</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="html-compatibility-mode">
+    <div class="col">
+      <h3>兼容模式</h4>
+      <p>IE 支持通过特定的 <code>&lt;meta&gt;</code> 标签来确定绘制页面所采用的 IE 版本。除非有特殊需求，最好设置为 <strong>edge mode</strong>，从而通知 IE 采用其所支持的最新的模式。</p>
+      <p><a href="http://stackoverflow.com/questions/6771258/whats-the-difference-if-meta-http-equiv-x-ua-compatible-content-ie-edge-e" target="_blank">阅读这篇 stack overflow 上的文章</a> 可以获得更多有用的信息。</p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="html">
+  <span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">"X-UA-Compatible"</span> <span class="na">content=</span><span class="s">"IE=Edge"</span><span class="nt">&gt;</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="html-encoding">
+    <div class="col">
+      <h4>视觉区域</h4>
+      <p>视觉区域（viewport）指的是浏览器（包括桌面浏览器和移动浏览器）显示页面的区域。它不包含浏览器地址栏、按钮这样的东西，只是浏览区域。为了让页面适应拥有不同大小视觉区域的浏览器，需要在 <code>&lt;head&gt;</code> 元素中添加视觉区域 <code>&lt;meta&gt;</code> 元素。<sup><a href="$ref[5]">[5]</a></sup></p>
+      <p>其中，<code>width=device-width</code> 用以将视觉区域的宽度会被设成与设备宽度相同的值，从而保证媒体查询的 <code>min-width</code> 和 <code>max-width</code> 特性拥有预期的效果。<code>initial-scale=1.0</code> 用以将页面的默认缩放级别设成100%。</p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="html">
+  <span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"viewport"</span> <span class="na">content=</span><span class="s">"width=device-width, initial-scale=1.0"</span><span class="nt">&gt;</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="html-style-script">
+    <div class="col">
+      <h4>引入文件</h4>
+      <p>根据 HTML5 规范（<a href="http://www.w3.org/TR/2011/WD-html5-20110525/semantics.html#the-link-element" target="_blank">link</a>、<a href="http://www.w3.org/TR/2011/WD-html5-20110525/semantics.html#the-style-element" target="_blank">style</a>、<a href="http://www.w3.org/TR/2011/WD-html5-20110525/scripting-1.html#the-script-element" target="_blank">script</a>），在引入 CSS 和 JavaScript 时一般不需要指定 <code>type</code> 属性，因为 <code>text/css</code> 和 <code>text/javascript</code> 分别是它们的默认值。</p>
+      <p>另外，也不需要为 <code>&lt;script&gt;</code> 标签添加 <code>lang</code> 属性。</p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="html">
+  <span class="c">&lt;!-- Good --&gt;</span>
+  <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">href=</span><span class="s">"style.css"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"script.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+
+  <span class="c">&lt;!-- Bad --&gt;</span>
+  <span class="nt">&lt;link</span> <span class="na">type=</span><span class="s">"text/css"</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">href=</span><span class="s">"style.css"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;script <span class="na">type=</span><span class="s">"text/javascript"</span> </span><span class="na">src=</span><span class="s">"script.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="heading-sub" id="html-markup">
+    <h3><em>- 标签 -</em></h3>
+  </div>
+  <div class="section" id="html-markup-rule">
+    <div class="col">
+      <h4>标签规则</h4>
+      <p>太多人觉得HTML太简单，但它恰恰又是前端开发中最基础最重要的部分。</p>
+      <ul>
+        <li>标签名统一使用小写，不要用大写</li>
+        <li>不要在自闭（self-closing）元素的尾部添加斜线 --<a href="http://dev.w3.org/html5/spec-author-view/rule.html#rule-start-tag" target="_blank">HTML5 规范</a> 表示可选</li>
+        <li>不要省略可选的结束标签（closing tag）（例如，<code>&lt;/li&gt;</code>或<code>&lt;/body&gt;</code>）</li>
+        <li>除非必要，不要使用字符实体</li>
+      </ul>
+      <p>尽量遵循 HTML 标准和语义，但是不要以牺牲实用性为代价。任何时候都要尽量使用最少的标签并保持最小的复杂度。</p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="html">
+  <span class="c">&lt;!-- Good --&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;ul&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">"images/image.jpg"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;/li&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        "Not Character Entity"
+      <span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;/ul&gt;</span>
+  <span class="nt">&lt;/body&gt;</span>
+
+  <span class="c">&lt;!-- Bad --&gt;</span>
+  <span class="nt">&lt;BODY&gt;</span>
+    <span class="nt">&lt;UL&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">"images/image.jpg"</span><span class="nt"> /&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        &amp;quot;Character Entity&amp;quot;
+    <span class="nt">&lt;/UL&gt;</span>
+  <span class="nt">&lt;/BODY&gt;</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="html-markup-rule">
+    <div class="col">
+      <h4>标签缩进</h4>
+      <p>良好的缩进大大增强可读性。</p>
+      <ul>
+        <li><code>&lt;doctype&gt;</code> <code>&lt;html&gt;</code> <code>&lt;head&gt;</code> <code>&lt;body&gt;</code> 不需要缩进</li>
+        <li>其余标签都采用2个空格缩进</li>
+        <li>保持对齐</li>
+      </ul>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="html">
+  <span class="c">&lt;!-- Good --&gt;</span>
+  <span class="cp">&lt;!DOCTYPE html&gt;</span>
+  <span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">"zh-cn"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;title&gt;</span>Page title<span class="nt">&lt;/title&gt;</span>
+  <span class="nt">&lt;/head&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+
+    <span class="nt">&lt;h1</span> <span class="na">class=</span><span class="s">"hello-world"</span><span class="nt">&gt;</span>Hello, world!<span class="nt">&lt;/h1&gt;</span>
+    <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">"images/image.jpg"</span><span class="nt">&gt;</span>
+
+  <span class="nt">&lt;/body&gt;</span>
+  <span class="nt">&lt;/html&gt;</span>
+
+  <span class="c">&lt;!-- Bad --&gt;</span>
+  <span class="cp">&lt;!DOCTYPE html&gt;</span>
+    <span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">"zh-cn"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;head&gt;</span>
+      <span class="nt">&lt;title&gt;</span>Page title<span class="nt">&lt;/title&gt;</span>
+    <span class="nt">&lt;/head&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;h1</span> <span class="na">class=</span><span class="s">"hello-world"</span><span class="nt">&gt;</span>Hello, world!<span class="nt">&lt;/h1&gt;</span>
+      <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">"images/image.jpg"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;/body&gt;</span>
+  <span class="nt">&lt;/html&gt;</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="html-semantic">
+    <div class="col">
+      <h4>标签语义化</h4>
+      <p>根据各个标签的用途而去使用它们。</p>
+      <p>使用标签要知道为什么去使用它们和是否正确。 例如，用 <code>&lt;h1&gt;</code> 标签构造标题， <code>&lt;p&gt;</code> 标签构造段落, <code>&lt;a&gt;</code> 标签构造锚点等。根据各个标签的用途而去使用是很重要的，它涉及到文档的可访问性、重用和代码效率等方面：</p>
+      <ul>
+        <li>去掉样式或者样式丢失时页面结构依然清晰分明</li>
+        <li>移动设备能够更加完美的展示网页（移动设备对css的支持较弱）</li>
+        <li>阅读器会根据标签的语义自动解析，呈现更容易阅读的内容形式（无障碍阅读）</li>
+        <li>搜索引擎会根据标签的语义确定上下文和权重问题</li>
+        <li>便于后期的开发以及维护，提高团队合作效率</li>
+      </ul>
+      <p>在前端web开发的上下文中，语义大多是与元素，属性，和属性值（包括像Microdata之类的扩展）的一致认同意义相关。这些认同意义通常在规范中被定义概念，它们可以帮助人类（程序员）或机器（搜索引擎）更好的理解网站中信息的不同方面。<sup><a href="#ref[4]">[4]</a></sup></p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="html">
+  <span class="c">&lt;!-- Good --&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+
+    <span class="nt">&lt;header&gt;</span>
+      <span class="nt">&lt;a</span> <span class="nt">href=</span><span class="s">"recommendations"</span><span class="nt">&gt;</span>
+        All recommendations
+      <span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;/header&gt;</span>
+
+    <span class="nt">&lt;section&gt;</span>
+      <span class="nt">&lt;article&gt;</span>...<span class="nt">&lt;/article&gt;</span>
+    <span class="nt">&lt;/section&gt;</span>
+
+    <span class="nt">&lt;footer&gt;</span><span class="nt">&lt;/footer&gt;</span>
+
+  <span class="nt">&lt;body&gt;</span>
+
+  <span class="c">&lt;!-- Bad --&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+
+    <span class="nt">&lt;div&gt;</span>
+      <span class="nt">&lt;div</span> <span class="na">onclick=</span><span class="s">"goToRecommendations();"</span><sapn class="nt">&gt;</sapn>
+        All recommendations
+      <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+
+    <span class="nt">&lt;div&gt;</span>
+      <span class="nt">&lt;div&gt;</span>...<span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+
+    <span class="nt">&lt;div&gt;</span><span class="nt">&lt;/div&gt;</span>
+
+  <span class="nt">&lt;body&gt;</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="heading-sub" id="html-attribute">
+    <h3><em>- 属性 -</em></h3>
+  </div>
+  <div class="section" id="html-attr-rule">
+    <div class="col">
+      <h4>属性规则</h4>
+      <p>使用标签时请尽量符合语义。</p>
+      <ul>
+        <li>属性名统一使用小写，不要用大写</li>
+        <li>务必用双引号包含属性值</li>
+        <li>自定义属性请加 <code>data-</code> 前缀</li>
+        <li>属性过长时请分行</li>
+        <li>尽量避免 style 属性 和 Javascript 事件</li>
+      </ul>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="html">
+  <span class="c">&lt;!-- Good --&gt;</span>
+  <span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">"zh-cn"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;section</span> <span class="na">data-role=</span><span class="s">"dialog"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;h1</span> <span class="na">class=</span><span class="s">"hello-world"</span><span class="nt">&gt;</span>Hello, world!<span class="nt">&lt;/h1&gt;</span>
+      <span class="nt">&lt;img</span>
+        <span class="nt">class=</span><span class="s">"long-attr"</span>
+        <span class="nt">data-role=</span><span class="s">"example"</span>
+        <span class="na">src=</span><span class="s">"images/image.jpg"</span>
+        <span class="nt">width=</span><span class="s">"100%"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;/section&gt;</span>
+  <span class="nt">&lt;/body&gt;</span>
+  <span class="nt">&lt;/html&gt;</span>
+
+  <span class="c">&lt;!-- Bad --&gt;</span>
+  <span class="nt">&lt;html</span> <span class="na">LANG=</span><span class="s">"zh-cn"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;body</span> <span class="na">onload=</span><span class="s">init()</span> <span class="nt">&gt;</span>
+    <span class="nt">&lt;section</span> <span class="na">my-role=</span><span class="s">dialog</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;h1</span> <span class="na">class=</span><span class="s">"hello-world"</span><span class="nt">&gt;</span>Hello, world!<span class="nt">&lt;/h1&gt;</span>
+      <span class="nt">&lt;img</span> <span class="nt">class=</span><span class="s">"long-attr"</span> <span class="nt">custom-role=</span><span class="s">"example"</span> <span class="na">src=</span><span class="s">"images/image.jpg"</span> <span class="nt">style=</span><span class="s">"width:100%"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;/section&gt;</span>
+  <span class="nt">&lt;/body&gt;</span>
+  <span class="nt">&lt;/html&gt;</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="html-attr-order">
+    <div class="col">
+      <h3>属性顺序</h4>
+      <p>HTML 属性应当按照以下给出的顺序依次排列，确保代码的易读性。</p>
+      <ul>
+        <li>
+          <code>class</code>
+        </li>
+        <li>
+          <code>id</code>,<code>name</code>
+        </li>
+        <li>
+          <code>data-*</code>
+        </li>
+        <li>
+          <code>src</code>,<code>for</code>,<code>type</code>,<code>href</code>
+        </li>
+        <li>
+          <code>title</code>,<code>alt</code>
+        </li>
+        <li>
+          <code>aria-*</code>,<code>role</code>
+        </li>
+      </ul>
+      <p>class 用于标识高度可复用组件，因此应该排在首位。id 用于标识具体组件，应当谨慎使用（例如，页面内的书签），因此排在第二位。</p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="html">
+  <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"..."</span> <span class="na">id=</span><span class="s">"..."</span> <span class="na">data-modal=</span><span class="s">"toggle"</span> <span class="na">href=</span><span class="s">"#"</span><span class="nt">&gt;</span>...<span class="nt">&lt;/a&gt;</span>
+
+  <span class="nt">&lt;input</span> <span class="na">class=</span><span class="s">"form-control"</span> <span class="na">type=</span><span class="s">"text"</span><span class="nt">&gt;</span>
+
+  <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">"..."</span> <span class="na">alt=</span><span class="s">"..."</span><span class="nt">&gt;</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="html-attr-boolean">
+    <div class="col">
+      <h4>布尔属性</h4>
+      <p>布尔型属性可以在声明时不赋值。</p>
+      <p>XHTML 规范要求为其赋值，但是 HTML5 规范不需要（<a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/common-microrulees.html#boolean-attributes" target="_blank">WhatWG section on boolean attributes</a>）：</p>
+      <blockquote>
+        <p>元素的布尔型属性如果有值，就是 true，如果没有值，就是 false。</p>
+      </blockquote>
+      <p>如果<em>一定</em>要为其赋值的话，请参考 WhatWG 规范：</p>
+      <blockquote>
+        <p>如果属性存在，其值必须是 空字符串 或 区分大小写的规范名称，并且不要在收尾时添加空格。</p>
+      </blockquote>
+      <p>
+        <strong>简单来说，就是不用赋值。</strong>
+      </p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="html">
+  <span class="c">&lt;!-- Good --&gt;</span>
+  <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">disabled</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"checkbox"</span> <span class="na">value=</span><span class="s">"1"</span> <span class="na">checked</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;option</span> <span class="na">value=</span><span class="s">"1"</span> <span class="na">selected</span><span class="nt">&gt;</span>1<span class="nt">&lt;/option&gt;</span>
+
+  <span class="c">&lt;!-- Bad --&gt;</span>
+  <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">disabled=</span><span class="s">"disabled"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"checkbox"</span> <span class="na">value=</span><span class="s">"1"</span> <span class="na">checked=</span><span class="s">"checked"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;option</span> <span class="na">value=</span><span class="s">"1"</span> <span class="na">selected=</span><span class="s">"selected"</span><span class="nt">&gt;</span>1<span class="nt">&lt;/option&gt;</span>
+</code>
+      </pre>
+    </div>
+  </div>
+
+
+
+  <div class="heading" id="css">
+    <h2>CSS</h2>
+  </div>
+  <div class="heading-sub" id="css-declar">
+    <h3><em>- 声明 -</em></h3>
+  </div>
+  <div class="section" id="css-declar-rule">
+    <div class="col">
+      <h3>声明规则</h4>
+      <ul>
+        <li>选择器分组中的每个选择器独占一行</li>
+        <li>左花括号<code>{</code>前保留一个空格，与选择器在同一行</li>
+        <li>右花括号<code>}</code>独占一行</li>
+        <li>所有声明独占一行，并以分号<code>;</code>结尾</li>
+        <li>冒号<code>:</code>后保留一个空格</li>
+      </ul>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="css">
+  <span class="c">/* Good */</span>
+  <span class="nc">.selector</span><span class="o">,</span>
+  <span class="nc">.selector-secondary</span><span class="o">,</span>
+  <span class="nc">.selector</span><span class="o">[</span><span class="nt">type</span><span class="o">=</span><span class="s2">"text"</span><span class="o">]</span> <span class="p">{</span>
+    <span class="k">padding</span><span class="o">:</span> <span class="m">15px</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="c">/* Bad */</span>
+  <span class="nc">#selector</span><span class="o">,</span> <span class="nc">.selector-secondary</span><span class="o">,</span> <span class="nc">.selector</span><span class="o">[</span><span class="nt">type</span><span class="o">=</span><span class="nt">text</span><span class="o">]</span> <span class="p">{</span>
+    <span class="k">padding</span><span class="o">:</span><span class="m">15px</span><span class="p">;</span>
+    <span class="k">margin</span><span class="o">:</span><span class="m">0px</span> <span class="m">0px</span> <span class="m">15px</span><span class="p">;</span> <span class="p">}</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="css-declar-single">
+    <div class="col">
+      <h4>单行声明</h4>
+      <p>对于<strong>只包含一条声明</strong>的一组相关样式，为了易读性和便于快速编辑，建议将语句放在同一行。</p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="css">
+  <span class="c">/* Good */</span>
+  <span class="nc">.icon</span>         <span class="p">{</span> <span class="k">background-position</span><span class="o">:</span> <span class="m">0</span> <span class="m">0</span><span class="p">;</span> <span class="p">}</span>
+  <span class="nc">.icon-home</span>    <span class="p">{</span> <span class="k">background-position</span><span class="o">:</span> <span class="m">0</span> <span class="m">-20px</span><span class="p">;</span> <span class="p">}</span>
+  <span class="nc">.icon-account</span> <span class="p">{</span> <span class="k">background-position</span><span class="o">:</span> <span class="m">0</span> <span class="m">-40px</span><span class="p">;</span> <span class="p">}</span>
+
+  <span class="c">/* Bad */</span>
+  <span class="nc">.icon</span> <span class="p">{</span>
+    <span class="k">background-position</span><span class="o">:</span> <span class="m">0</span> <span class="m">0</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nc">.icon-home</span> <span class="p">{</span>
+    <span class="k">background-position</span><span class="o">:</span> <span class="m">0</span> <span class="m">-20px</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nc">.icon-account</span> <span class="p">{</span>
+    <span class="k">background-position</span><span class="o">:</span> <span class="m">0</span> <span class="m">-40px</span><span class="p">;</span>
+  <span class="p">}</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="css-declar-selectors">
+    <div class="col">
+      <h3>选择器</h4>
+      <ul>
+        <li>不要使用 ID 选择器</li>
+        <li>对于通用元素使用 class ，这样利于渲染性能的优化</li>
+        <li>对于经常出现的组件，避免使用属性选择器（例如，<code>[class^="..."]</code>）。浏览器的性能会受到这些因素的影响</li>
+        <li>选择器要尽可能短，并且尽量限制组成选择器的元素个数，建议不要超过 3 </li>
+        <li>
+          <strong>只有</strong>在必要的时候才将 class 限制在最近的父元素内（也就是后代选择器）（例如，不使用带前缀的 class 时 -- 前缀类似于命名空间）</li>
+      </ul>
+      <p>扩展阅读：</p>
+      <ul>
+        <li><a href="http://markdotto.com/2012/02/16/scope-css-classes-with-prefixes/" target="_blank">Scope CSS classes with prefixes</a></li>
+        <li><a href="http://markdotto.com/2012/03/02/stop-the-cascade/" target="_blank">Stop the cascade</a></li>
+      </ul>
+    </div>
+    <div class="col">
+      <div class="highlight">
+        <pre>
+<code class="css">
+  <span class="c">/* Good */</span>
+  <span class="nc">.avatar</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+  <span class="nc">.tweet-header</span> <span class="nc">.username</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+  <span class="nc">.tweet</span> <span class="nc">.avatar</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+
+  <span class="c">/* Bad */</span>
+  <span class="nt">span</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+  <span class="nc">.page-container</span> <span class="nf">#stream</span> <span class="nc">.stream-item</span> <span class="nc">.tweet</span> <span class="nc">.tweet-header</span> <span class="nc">.username</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+  <span class="nc">.avatar</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+</code>
+        </pre>
+      </div>
+    </div>
+  </div>
+  <div class="section" id="css-declar-order">
+    <div class="col">
+      <h4>声明顺序</h4>
+      <p>相关的属性声明应当归为一组，并按照下面的顺序排列：</p>
+      <ol>
+        <li>Positioning（定位）</li>
+        <li>Box model（盒模型）</li>
+        <li>Visual（外观）</li>
+        <li>Typographic（文本）</li>
+      </ol>
+      <p>由于定位可以从正常的文档流中移除元素，并且还能覆盖盒模型相关的样式，因此排在首位。盒模型排在第二位，因为它决定了组件的尺寸和位置。</p>
+      <p>其他属性只是影响组件的<em>内部（inside）</em>或者是不影响前两组属性，因此排在后面。</p>
+      <p>完整的属性列表及其排列顺序请参考 <a href="http://twitter.github.com/recess" target="_blank">Recess</a> 。</p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="css">
+  <span class="nc">.declaration-order</span> <span class="p">{</span>
+    <span class="c">/* Positioning */</span>
+    <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
+    <span class="k">top</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+    <span class="k">right</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+    <span class="k">bottom</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+    <span class="k">left</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+    <span class="k">z-index</span><span class="o">:</span> <span class="m">100</span><span class="p">;</span>
+
+    <span class="c">/* Box-model */</span>
+    <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
+    <span class="k">float</span><span class="o">:</span> <span class="k">right</span><span class="p">;</span>
+    <span class="k">width</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
+    <span class="k">height</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
+
+    <span class="c">/* Visual */</span>
+    <span class="k">background-color</span><span class="o">:</span> <span class="m">#f5f5f5</span><span class="p">;</span>
+    <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#e5e5e5</span><span class="p">;</span>
+    <span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="m">3px</span><span class="p">;</span>
+
+    <span class="c">/* Typography */</span>
+    <span class="k">font</span><span class="o">:</span> <span class="k">normal</span> <span class="m">13px</span> <span class="s2">"Helvetica Neue"</span><span class="o">,</span> <span class="k">sans-serif</span><span class="p">;</span>
+    <span class="k">line-height</span><span class="o">:</span> <span class="m">1</span><span class="o">.</span><span class="m">5</span><span class="p">;</span>
+    <span class="k">color</span><span class="o">:</span> <span class="m">#333</span><span class="p">;</span>
+    <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
+
+    <span class="c">/* Misc */</span>
+    <span class="k">opacity</span><span class="o">:</span> <span class="m">1</span><span class="p">;</span>
+  <span class="p">}</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="heading-sub" id="css-attr">
+    <h3><em>- 属性 -</em></h3>
+  </div>
+  <div class="section" id="css-attr-rule">
+    <div class="col">
+      <h3>属性规则</h4>
+      <ul>
+        <li>括号内的逗号不要保留空格。<br>
+          （例如 <code>rgb()</code>、<code>rgba()</code>、<code>hsl()</code>、<code>hsla()</code>或<code>rect()</code>）</li>
+        <li>十六进制全部小写，且尽量简写。<br>
+          （例如 用<code>#fff</code>代替<code>#ffffff</code>）</li>
+        <li>省略小数前面的 0 。<br>
+          （例如 <code>.5</code>代替<code>0.5</code>；<code>-.5px</code>代替<code>-0.5px</code>）</li>
+        <li>省略 0 后面的单位。<br>
+          （例如 用<code>margin: 0;</code>代替<code>margin: 0px;</code>）</li>
+      </ul>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="css">
+  <span class="c">/* Good */</span>
+  <span class="nc">.selector</span><span class="o">,</span>
+  <span class="nc">.selector-secondary</span><span class="o">,</span>
+  <span class="nc">.selector</span><span class="o">[</span><span class="nt">type</span><span class="o">=</span><span class="s2">"text"</span><span class="o">]</span> <span class="p">{</span>
+    <span class="k">padding</span><span class="o">:</span> <span class="m">15px</span><span class="p">;</span>
+    <span class="k">margin-bottom</span><span class="o">:</span> <span class="m">15px</span><span class="p">;</span>
+    <span class="k">background-color</span><span class="o">:</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,.</span><span class="m">5</span><span class="p">);</span>
+    <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span>
+      <span class="m">0</span> <span class="m">1px</span> <span class="m">2px</span> <span class="m">#ccc</span><span class="o">,</span>
+      <span class="m">0</span> <span class="m">1px</span> <span class="m">0</span> <span class="m">#fff</span><span class="p"> <span class="k">inset</span>;</span>
+  <span class="p">}</span>
+
+  <span class="c">/* Bad */</span>
+  <span class="nc">#selector</span><span class="o">,</span> <span class="nc">.selector-secondary</span><span class="o">,</span> <span class="nc">.selector</span><span class="o">[</span><span class="nt">type</span><span class="o">=</span><span class="nt">text</span><span class="o">]</span> <span class="p">{</span>
+    <span class="k">padding</span><span class="o">:</span><span class="m">15px</span><span class="p">;</span>
+    <span class="k">margin</span><span class="o">:</span><span class="m">0px</span> <span class="m">0px</span> <span class="m">15px</span><span class="p">;</span>
+    <span class="k">background-color</span><span class="o">:</span><span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span> <span class="m">0</span><span class="o">,</span> <span class="m">0</span><span class="o">,</span> <span class="m">0</span><span class="o">.</span><span class="m">5</span><span class="p">);</span>
+    <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span><span class="m">0px</span> <span class="m">1px</span> <span class="m">2px</span> <span class="m">#CCC</span><span class="o">,</span><span class="k">inset</span> <span class="m">0</span> <span class="m">1px</span> <span class="m">0</span> <span class="m">#FFFFFF</span> <span class="p">}</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="css-attr-prefix">
+    <div class="col">
+      <h4>带前缀的属性</h4>
+      <p>当使用特定厂商的带有前缀的属性时，通过缩进的方式，让每个属性的值在垂直方向对齐，这样便于多行编辑。</p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="css">
+  <span class="c">/* Good */</span>
+  <span class="nc">.selector</span> <span class="p">{</span>
+    <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">1px</span> <span class="m">2px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,.</span><span class="m">15</span><span class="p">);</span>
+            <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">1px</span> <span class="m">2px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,.</span><span class="m">15</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="c">/* Bad */</span>
+  <span class="nc">.selector</span> <span class="p">{</span>
+    <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">1px</span> <span class="m">2px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,.</span><span class="m">15</span><span class="p">);</span>
+    <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">1px</span> <span class="m">2px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,.</span><span class="m">15</span><span class="p">);</span>
+  <span class="p">}</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="css-attr-multi">
+    <div class="col">
+      <h4>多重属性值</h4>
+      <p>对于以逗号分隔并且非常长的属性值 -- 例如一堆渐变或者阴影的声明 -- 可以放在多行中，这有助于提高可读性，并易于生成有效的区分。</p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="css">
+  <span class="c">/* Good */</span>
+  <span class="nc">.selector</span> <span class="p">{</span>
+    <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span>
+      <span class="m">1px</span> <span class="m">1px</span> <span class="m">1px</span> <span class="m">#000</span><span class="o">,</span>
+      <span class="m">2px</span> <span class="m">2px</span> <span class="m">1px</span> <span class="m">1px</span> <span class="m">#ccc</span> <span class="k">inset</span><span class="p">;</span>
+    <span class="k">background-image</span><span class="o">:</span>
+      <span class="n">linear</span><span class="o">-</span><span class="n">gradient</span><span class="p">(</span><span class="m">#fff</span><span class="o">,</span> <span class="m">#ccc</span><span class="p">)</span><span class="o">,</span>
+      <span class="n">linear</span><span class="o">-</span><span class="n">gradient</span><span class="p">(</span><span class="m">#f3c</span><span class="o">,</span> <span class="m">#4ec</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="c">/* Bad */</span>
+  <span class="nc">.selector</span> <span class="p">{</span>
+    <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">1px</span> <span class="m">1px</span> <span class="m">1px</span> <span class="m">#000</span><span class="o">,</span> <span class="m">2px</span> <span class="m">2px</span> <span class="m">1px</span> <span class="m">1px</span> <span class="m">#ccc</span> <span class="k">inset</span><span class="p">;</span>
+    <span class="k">background-image</span><span class="o">:</span> <span class="n">linear</span><span class="o">-</span><span class="n">gradient</span><span class="p">(</span><span class="m">#fff</span><span class="o">,</span> <span class="m">#ccc</span><span class="p">)</span><span class="o">,</span> <span class="n">linear</span><span class="o">-</span><span class="n">gradient</span><span class="p">(</span><span class="m">#f3c</span><span class="o">,</span> <span class="m">#4ec</span><span class="p">);</span>
+  <span class="p">}</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="css-attr-shorthand">
+    <div class="col">
+      <h4>简写形式的属性</h4>
+      <p>在需要显示地设置所有值的情况下，应当尽量限制使用简写形式的属性声明。常见的滥用简写属性声明的情况如下：</p>
+      <ul>
+        <li>
+          <code>padding</code>
+        </li>
+        <li>
+          <code>margin</code>
+        </li>
+        <li>
+          <code>font</code>
+        </li>
+        <li>
+          <code>background</code>
+        </li>
+        <li>
+          <code>border</code>
+        </li>
+        <li>
+          <code>border-radius</code>
+        </li>
+      </ul>
+      <p>大部分情况下，我们不需要为简写形式的属性声明指定所有值。例如，HTML 的 heading 元素只需要设置上、下边距（margin）的值，因此，在必要的时候，只需覆盖这两个值就可以。过度使用简写形式的属性声明会导致代码混乱，并且会对属性值带来不必要的覆盖从而引起意外的副作用。</p>
+      <p>MDN（Mozilla Developer Network）上一篇非常好的关于 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Shorthand_properties" target="_blank">shorthand properties</a> 的文章，对于不太熟悉简写属性声明及其行为的用户很有用。</p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="css">
+  <span class="c">/* Good */</span>
+  <span class="nc">.element</span> <span class="p">{</span>
+    <span class="k">margin-bottom</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
+    <span class="k">background-color</span><span class="o">:</span> <span class="nb">red</span><span class="p">;</span>
+    <span class="k">background-image</span><span class="o">:</span> <span class="sx">url("image.jpg")</span><span class="p">;</span>
+    <span class="k">border-top</span><span class="o">-</span><span class="k">left</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="m">3px</span><span class="p">;</span>
+    <span class="k">border-top</span><span class="o">-</span><span class="k">right</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="m">3px</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="c">/* Bad */</span>
+  <span class="nc">.element</span> <span class="p">{</span>
+    <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">0</span> <span class="m">10px</span><span class="p">;</span>
+    <span class="k">background</span><span class="o">:</span> <span class="nb">red</span><span class="p">;</span>
+    <span class="k">background</span><span class="o">:</span> <span class="sx">url("image.jpg")</span><span class="p">;</span>
+    <span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="m">3px</span> <span class="m">3px</span> <span class="m">0</span> <span class="m">0</span><span class="p">;</span>
+  <span class="p">}</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="heading-sub" id="css-other">
+    <h3><em>- 其他 -</em></h3>
+  </div>
+  <div class="section" id="css-naming">
+    <div class="col">
+      <h3>class 命名</h4>
+      <ul>
+        <li>使用小写英文，不要用拼音</li>
+        <li>使用破折号<code>-</code>连接</li>
+        <li>名称应当尽可能短，但要避免过度的简写</li>
+        <li>描述内容的性质，不要描述表现形式（presentational）</li>
+        <li>以父类作为子类的前缀</li>
+      </ul>
+      <p>在为 Sass 和 Less 变量命名是也可以参考上面列出的各项规范。</p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="css">
+  <span class="c">/* Good */</span>
+  <span class="nc">.btn</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+  <span class="nc">.btn-success</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+  <span class="nc">.tweet</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+  <span class="nc">.tweet-header</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+
+  <span class="c">/* Bad */</span>
+  <span class="nc">.s</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+  <span class="nc">.t_01</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+  <span class="nc">.red</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+  <span class="nc">.header</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="css-import">
+    <div class="col">
+      <h3>不要使用 @import
+      </h3>
+      <p>与<code>&lt;link&gt;</code>标签相比，<code>@import</code>指令要慢很多，不光增加了额外的请求次数，还会导致不可预料的问题。替代办法有以下几种：</p>
+      <ul>
+        <li>使用多个<code>&lt;link&gt;</code>元素</li>
+        <li>通过 Sass 或 Less 类似的 CSS 预处理器将多个 CSS 文件编译为一个文件</li>
+        <li>通过 Rails、Jekyll 或其他系统中提供过 CSS 文件合并功能</li>
+      </ul>
+      <p>请参考 <a href="http://www.stevesouders.com/blog/2009/04/09/dont-use-import/" target="_blank">Steve Souders 的文章</a> 了解更多知识。</p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="html">
+  <span class="c">&lt;!-- Good --&gt;</span>
+  <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">href=</span><span class="s">"core.css"</span><span class="nt">&gt;</span>
+
+  <span class="c">/* Bad */</span>
+  <span class="k">@import</span> <span class="nt">url</span><span class="o">(</span><span class="s2">"more.css"</span><span class="o">)</span><span class="p">;</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="css-media-queries">
+    <div class="col">
+      <h3>媒体查询的位置</h4>
+      <ul>
+        <li>将媒体查询尽可能放在相关规则的附近</li>
+        <li>或者将它们打包成一个文件（例如 respond.css）</li>
+      </ul>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="css">
+  <span class="nc">.selector</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+  <span class="nc">.selector-avatar</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+
+  <span class="k">@media</span> <span class="o">(</span><span class="nt">min-width</span><span class="o">:</span> <span class="nt">480px</span><span class="o">)</span> <span class="p">{</span>
+    <span class="nc">.selector</span> <span class="p">{</span> <span class="o">...</span><span class="p">}</span>
+    <span class="nc">.selector-avatar</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+  <span class="p">}</span>
+</code>
+      </pre>
+    </div>
+  </div>
+
+
+
+  <div class="heading" id="js">
+    <h2>Javascript <sup><a href="#ref[3]"><small>[3]</small></a></sup></h2>
+  </div>
+  <div class="heading-sub">
+    <h3><em>- 基本 -</em></h3>
+  </div>
+  <div class="section" id="js-rule">
+    <div class="col">
+      <h3>基本规则</h4>
+      <ul>
+        <li>每条语句独占一行</li>
+        <li>总是在语句的结尾添加分号 <code>;</code></li>
+        <li>分号 <code>;</code> 左边不要有多余的空格</li>
+        <li>在逗号 <code>,</code> 的右边保留一个空格</li>
+        <li>在运算符左右保留一个空格</li>
+        <li>单行最好不超过 80 字</li>
+        <li>适当添加空行提升可读性</li>
+      </ul>
+      <p>根据上述风格来配置 <code>.jshintrc</code> 文件。</p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="javascript">
+  <span class="c">/* Good */</span>
+  <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="s2">"Hello"</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">bar</span> <span class="o">=</span> <span class="s2">"World"</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">foo</span><span class="p">:</span> <span class="mi">0</span>
+  <span class="p">};</span>
+
+  <span class="kd">function</span> <span class="nx">showMessage</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">alert</span><span class="p">(</span><span class="nx">a</span> <span class="o">+</span> <span class="s2">" "</span> <span class="o">+</span> <span class="nx">b</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">obj</span><span class="p">.</span><span class="nx">foo</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+
+  <span class="c">/* Bad */</span>
+  <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="s2">"Hello"</span> <span class="c">// 没有分号</span>
+  <span class="kd">var</span> <span class="nx">bar</span> <span class="o">=</span> <span class="s2">"World"</span><span class="p"> ;</span> <span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{</span> <span class="c">// 两条语句在同一行</span>
+    <span class="nx">foo</span><span class="p">:</span><span class="mi">0</span>
+  <span class="p">}</span>
+  <span class="kd">function</span> <span class="nx">showMessage</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">)</span> <span class="p">{</span> <span class="c">// 逗号后面没有保留空格</span>
+    <span class="nx">alert</span><span class="p">(</span><span class="nx">a</span><span class="o">+</span><span class="s2">" "</span><span class="o">+</span><span class="nx">b</span><span class="p">)</span> <span class="c">// 操作符左右没有保留空格</span>
+  <span class="p">}</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="js-suggest">
+    <div class="col">
+      <h3>其他建议</h4>
+      <ul>
+        <li>尽量使用恒等 <code>===</code> 代替相等 <code>==</code></li>
+        <li>不要用构造函数创建内置类型（Boolean、Array、Object...）</li>
+        <li>不要在 <code>eval()</code>、<code>Function</code>、<code>setTimeout</code>、<code>setInterval()</code> 中使用字符串创建 Javascript 语句</li>
+        <li>不要使用 <code>with</code> 语句</li>
+        <li>不要使用 <code>goto</code> 语句</li>
+      </ul>
+      <p>根据上述风格来配置 <code>.jshintrc</code> 文件。</p>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="javascript">
+  <span class="c">/* Good */</span>
+  <span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">foo</span><span class="p">:</span> <span class="mi">0</span> <span class="p">};</span>
+
+  <span class="nx">obj</span><span class="p">.</span><span class="nx">foo</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+
+  <span class="kd">if</span> <span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">foo</span> <span class="o">===</span> <span class="mi">10</span><span class="p">) {</span>
+    <span class="kd">setTimeout</span><span class="p">(</span><span class="kd">function</span> <span class="p">() {</span>
+      <span class="nx">alert</span><span class="p">(</span><span class="s2">"closure"</span><span class="p">);</span>
+    <span class="p">},</span> <span class="mi">50</span><span class="p">);</span>
+  <span class="p">);</span>
+
+  <span class="c">/* Bad */</span>
+  <span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Object</span><span class="p">();</span> <span class="c">// 不要用构造函数创建</span>
+
+  <span class="kd">with</span> <span class="p">(</span><span class="nx">obj</span><span class="p">) {</span> <span class="c">// 不要使用 with</span>
+    <span class="nx">foo</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span> <span class="c">// 这里创建了一个全局变量</span>
+  <span class="p">}</span>
+
+  <span class="kd">if</span> <span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">foo</span> <span class="o">==</span> <span class="mi">10</span><span class="p">) {</span> <span class="c">// 尽量使用恒等式</span>
+    <span class="kd">setTimeout</span><span class="p">(</span><span class="s2">"alert('eval')"</span><span class="p">,</span> <span class="mi">50</span><span class="p">);</span> <span class="c">// 不要用字符串的方式执行语句</span>
+  <span class="p">}</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="js-declare">
+    <div class="col">
+      <h3>声明</h4>
+      <p>Javascript 中的声明可以在脚本的任何地方，但是它们实际上都会提前到包含这段逻辑的上下文的顶部执行。</p>
+      <ul>
+        <li>将变量提前到顶部声明</li>
+        <li>每条声明都使用 <code>var</code>。这样方便在开发时修改，而在构建阶段再把它们合并</li>
+        <li>每条声明独占一行，统一缩进</li>
+        <li>建议使用 <code>var</code> 声明函数</li>
+        <li>总是先声明函数，再使用函数</li>
+        <li>在函数内部的函数应当紧跟着变量声明之后声明</li>
+      </ul>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="javascript">
+  <span class="c">/* Good */</span>
+  <span class="kd">var</span> <span class="nx">foo</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">bar</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+
+  <span class="kd">if</span> <span class="p">(</span><span class="nx">condition</span><span class="p">) {</span>
+    <span class="kd">var</span> <span class="nx">func</span> <span class="o">=</span> <span class="kd">function</span><span class="p"> () {</span>
+      ...
+    <span class="p">};</span>
+  <span class="p">}</span> <span class="kd">else</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">func</span> <span class="o">=</span> <span class="kd">function</span><span class="p"> () {</span>
+      ...
+    <span class="p">};</span>
+  <span class="p">}</span>
+
+  <span class="c">/* Bad */</span>
+  <span class="kd">var</span> <span class="nx">foo</span><span class="p">,</span> <span class="nx">bar</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nx">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">b</span><span class="p">;</span>
+
+  <span class="kd">if</span> <span class="p">(</span><span class="nx">condition</span><span class="p">) {</span>
+    <span class="kd">function</span> <span class="nx">func</span> <span class="p">() {</span>
+      ...
+    <span class="p">};</span>
+  <span class="p">}</span> <span class="kd">else</span> <span class="p">{</span>
+    <span class="kd">function</span> <span class="nx">func</span> <span class="p">() {</span>
+      ...
+    <span class="p">};</span>
+  <span class="p">}</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="js-naming">
+    <div class="col">
+      <h3>命名</h4>
+      <p>Javascript 对大小写是敏感的。名字最好能与它的内容相对应，一般情况下要使用英文而不是拼音。</p>
+      <ul>
+        <li>
+          变量：使用小驼峰命名法。第一个单词小写，之后的单词首字母大写。
+          <ul>
+            <li>数组类型最好使用复数形式</li>
+            <li>布尔类型使用谓语。<br>
+            （例如，使用 <code>is</code>、<code>has</code>等作为第一个单词）</li>
+          </ul>
+        </li>
+        <li>常量：使用大写字母，并且使用下划线 <code>_</code> 连接</li>
+        <li>函数：使用小驼峰命名法。
+          <ul>
+            <li>推荐使用长的、具描述性的函数名（动词+名词）。<br>
+            （例如，使用 <code>get</code>、<code>set</code> 等作为第一个单词）</li>
+            <li>如果返回值是布尔类型，可以参考布尔类型变量的命名</li>
+          </ul>
+        </li>
+        <li>构造函数：采用大驼峰命名法</li>
+      </ul>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="javascript">
+  <span class="c">/* Good */</span>
+  <span class="kd">var</span> <span class="nx">myName</span> <span class="o">=</span> <span class="s2">"Nicholas"</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">names</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">, </span><span class="mi">1</span><span class="p">, </span><span class="mi">2</span><span class="p">];</span>
+  <span class="kd">var</span> <span class="nx">isSet</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">MAX_COUNT</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+
+  <span class="kd">function</span> <span class="nx">getName</span><span class="p">() {</span>
+    <span class="k">return</span> <span class="nx">myName</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="kd">function</span> <span class="nx">Person</span><span class="p">(</span><span class="nx">name</span><span class="p">) {</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nx">Person</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">sayName</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">() {</span>
+    <span class="nx">alert</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="c">/* Bad */</span>
+  <span class="kd">var</span> <span class="nx">setName</span> <span class="o">=</span> <span class="s2">"Nicholas"</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">name</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">, </span><span class="mi">1</span><span class="p">, </span><span class="mi">2</span><span class="p">];</span>
+  <span class="kd">var</span> <span class="nx">set</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">max_count</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+
+  <span class="kd">function</span> <span class="nx">theName</span><span class="p">() {</span>
+    <span class="k">return</span> <span class="nx">setName</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="kd">function</span> <span class="nx">person</span><span class="p">(</span><span class="nx">name</span><span class="p">) {</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nx">person</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">sayName</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">() {</span>
+    <span class="nx">alert</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span>
+  <span class="p">}</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="js-brace">
+    <div class="col">
+      <h4>花括号</h4>
+      <p>采用 Java 的风格。</p>
+      <ul>
+        <li>代码块始终使用花括号 <code>{}</code> 包含，不要省略</li>
+        <li>左花括号 <code>{</code> 的左边保留一个空格，并且要与前面语句在同一行</li>
+        <li>代码块里的第一条语句应当在左花括号的下一行</li>
+        <li>代码块里的语句应保持缩进</li>
+        <li>最后一个右花括号 <code>}</code>（某些情况下会与右括号 <code>)</code> 或分号 <code>;</code>一起）独占一行</li>
+        <li>在连续的代码块中，前一个代码块结尾的右花括号 <code>}</code> 的右边保留一个空格，并且不要换行</li>
+      </ul>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="javascript">
+  <span class="c">/* Good */</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">conidion</span><span class="p">) {</span>
+    ...
+  <span class="p">}</span> <span class="k">else if</span> <span class="p">{</span>
+    ...
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    ...
+  <span class="p">}</span>
+
+  <span class="c">/* Bad */</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">conidion</span><span class="p">)</span> <span class="nx">foo</span><span class="p">();</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="nx">conidion</span><span class="p">)</span>
+    <span class="nx">foo</span><span class="p">();</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="nx">conidion</span><span class="p">) {</span> <span class="nx">foo</span><span class="p">(); }</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="nx">conidion</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="nx">foo</span><span class="p">();</span>
+  <span class="p">}</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="nx">conidion</span><span class="p">) {</span>
+    ...
+  <span class="p">}</span>
+  <span class="k">else</span><span class="p">{</span>
+    ...
+  <span class="p">}</span>
+
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="js-parenthesis">
+    <div class="col">
+      <h3>圆括号</h4>
+      <ul>
+        <li>声明或调用函数的时候，函数名与左括号 <code>(</code> 之间没有空格</li>
+        <li>所有其他语法元素与左括号 <code>(</code> 之间，都有一个空格</li>
+        <li>圆括号与其内容之间没有空格</li>
+        <li>立即执行函数不要省略圆括号</li>
+      </ul>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="javascript">
+  <span class="c">/* Good */</span>
+  <span class="nx">foo</span><span class="p">();</span>
+  <span class="nx">bar</span><span class="p">(a, b);</span>
+
+  <span class="k">for</span><span class="p"> (</span><span class="k">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">9</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">) {</span>
+    ...
+  <span class="p">}</span>
+
+  <span class="p">(</span><span class="nx">function</span> <span class="p">() {</span>
+    ...
+  <span class="p">})();</span>
+
+  <span class="c">/* Bad */</span>
+  <span class="nx">foo</span><span class="p"> ();</span>
+  <span class="nx">bar</span><span class="p">( a, b );</span>
+
+  <span class="k">for</span><span class="p">(</span><span class="k">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">9</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">) {</span>
+    ...
+  <span class="p">}</span>
+
+  <span class="nx">function</span><span class="p">() {</span>
+    ...
+  <span class="p">}();</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="heading-sub" id="js-literal">
+    <h3><em>- 直接量 -</em></h3>
+  </div>
+  <div class="section" id="js-string">
+    <div class="col">
+      <h4>字符串</h4>
+      <p>与 Java、PHP 这些语言不同，Javascript 中的字符串使用双引号或单引号在功能上并无不同。但是我们需要关心的是，代码应当从头到尾只保持一种风格。</p>
+      <ul>
+        <li>使用双引号 <code>""</code> 括起来</li>
+        <li>不要使用反斜杠 <code>\</code> 来换行</li>
+        <li>使用字符串连接符 <code>+</code> 来换行</li>
+      </ul>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="javascript">
+  <span class="c">/* Good */</span>
+  <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="s2">"Hello World!"</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">longString</span> <span class="o">=</span> <span class="s2">"This is a long string "</span> <span class="o">+</span>
+    <span class="s2">"example."</span><span class="p">;</span>
+
+  <span class="c">/* Bad */</span>
+  <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="s2">'Hello World!'</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">longString</span> <span class="o">=</span> <span class="s2">"This is a long string \</span>
+    <span class="s2">example."</span><span class="p">;</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="js-number">
+    <div class="col">
+      <h4>数字</h4>
+      <p>在 Javascript 中，整数 和 浮点数 其实都存储为相同的数据类型。</p>
+      <ul>
+        <li>不要省略小数点 <code>.</code> 前后的数字</li>
+        <li>不要采用八进制写法</li>
+      </ul>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="javascript">
+  <span class="c">/* Good */</span>
+  <span class="k">var</span> <span class="nx">float</span> <span class="o">=</span> <spam class="mi">10.00</spam><span class="p">;</span>
+  <span class="k">var</span> <span class="nx">float</span> <span class="o">=</span> <spam class="mi">0.01</spam><span class="p">;</span>
+  <span class="k">var</span> <span class="nx">num</span> <span class="o">=</span> <spam class="mi">8</spam><span class="p">;</span>
+
+  <span class="c">/* Bad */</span>
+  <span class="k">var</span> <span class="nx">float</span> <span class="o">=</span> <spam class="mi">10.</spam><span class="p">;</span>
+  <span class="k">var</span> <span class="nx">float</span> <span class="o">=</span> <spam class="mi">.01</spam><span class="p">;</span>
+  <span class="k">var</span> <span class="nx">num</span> <span class="o">=</span> <spam class="mi">010</spam><span class="p">;</span> <span class="c">// 八进制写法</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="js-array">
+    <div class="col">
+      <h4>数组</h4>
+      <p>使用数组直接量是定义数组最简洁的一种方式。</p>
+      <ul>
+        <li>方括号的旁边无需保留空格</li>
+        <li>在逗号 <code>,</code> 的右边保留一个空格</li>
+        <li>如果值不长，应该放在同一行</li>
+        <li>如果值太长，可以参考 <a href="#js-brace">花括号</a> 规则</li>
+      </ul>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="javascript">
+  <span class="c">/* Good */</span>
+  <span class="kd">var</span> <span class="nx">values</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">, </span><span class="mi">1</span><span class="p">, </span><span class="mi">2</span><span class="p">];</span>
+  <span class="kd">var</span> <span class="nx">longValues</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="mi">0</span><span class="p">,</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+    <span class="p">{</span><span class="nx">a</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">b</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+  <span class="p">];</span>
+
+  <span class="c">/* Bad */</span>
+  <span class="kd">var</span> <span class="nx">values</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">];</span>
+  <span class="kd">var</span> <span class="nx">values</span> <span class="o">=</span> <span class="p">[ </span><span class="mi">0</span><span class="p">, </span><span class="mi">1</span><span class="p">, </span><span class="mi">2</span><span class="p"> ];</span>
+  <span class="kd">var</span> <span class="nx">longValues</span> <span class="o">=</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">{</span><span class="nx">a</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">b</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span> <span class="p">];</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="js-object">
+    <div class="col">
+      <h4>对象</h4>
+      <p>对象直接量可以高效地完成与非直接量写法相同的任务。</p>
+      <ul>
+        <li>每个属性独占一行</li>
+        <li>属性名除非必要，无需用引号括住</li>
+        <li>在冒号 <code>:</code> 的右侧保留一个空格，而左边不保留空格</li>
+        <li>去掉结尾的逗号 <code>,</code> </li>
+        <li>花括号遵循前面制定的 <a href="#js-brace">花括号</a> 规则</li>
+        <li>嵌套的对象可以在长度较短的情况下保持单行，也可以不保持</li>
+      </ul>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="javascript">
+  <span class="c">/* Good */</span>
+  <span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">foo</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nx">bar</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="nx">obj</span><span class="p">:</span> <span class="p">{</span><span class="nx">a</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">b</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="c">/* Bad */</span>
+  <span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">foo</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">bar</span><span class="p">: </span><span class="mi">0</span> <span class="p">}</span>
+  <span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"foo"</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+    <span class="nx">bar</span> <span class="p">:</span><span class="mi">1</span>
+  <span class="p">}</span>
+  <span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">foo</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">bar</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="p">}</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="js-null-undefined">
+    <div class="col">
+      <h3>null 和 undefined</h4>
+      <p><code>null</code> 常会与 <code>undefined</code> 混淆。其中一个让人颇感困惑之处在于 <code>null == undefined</code> 结果是 <code>true</code>。然而这两个值的用途却各不相同。</p>
+      <p>以下场景才应当使用 <code>null</code>：</p>
+      <ul>
+        <li>用来初始化变量，该变量可能被赋值为对象</li>
+        <li>用来和一个已经初始化的变量进行比较，这个变量可以是非对象</li>
+        <li>当函数期望的参数是对象，用作参数传入</li>
+        <li>当函数的返回值期望是对象时，用作返回值传出</li>
+      </ul>
+      <p>以下场景不应当使用 <code>null</code>：</p>
+      <ul>
+        <li>不要用 <code>null</code> 来检测一个未初始化的变量</li>
+        <li>不要使用 <code>null</code> 来检测是否传入了参数</li>
+      </ul>
+      <p>禁止使用特殊值 <code>undefined</code>：</p>
+      <ul>
+        <li>如果声明一个可能赋值为对象的变量时，将其赋值为 <code>null</code></li>
+        <li>通过 <code>typeof</code> 来检测 <code>undefined</code></li>
+      </ul>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="javascript">
+  <span class="c">/* Good */</span>
+  <span class="kd">var</span> <span class="nx">person</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+
+  <span class="kd">if</span> <span class="p">(</span><span class="nx">person</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">) {</span>
+    <span class="nx">doSomething</span><span class="p">();</span>
+  <span class="p">}</span>
+
+  <span class="kd">function</span> <span class="nx">getPerson</span><span class="p">() {</span>
+    <span class="kd">if</span> <span class="p">(</span><span class="nx">condition</span><span class="p">) {</span>
+      <span class="k">return</span> <span class="k">new</span> <span class="nx">Person</span><span class="p">(</span><span class="s2">"Nicholas"</span><span class="p">);</span>
+    <span class="p">}</span> <span class="kd">else</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">person</span> <span class="o">===</span> <span class="kc">null</span><span class="p">);</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">person</span> <span class="o">===</span> <span class="s2">"undefined"</span><span class="p">);</span>
+
+  <span class="c">/* Bad */</span>
+  <span class="kd">var</span> <span class="nx">person</span><span class="p">;</span>
+
+  <span class="kd">if</span> <span class="p">(</span><span class="nx">person</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">) {</span> <span class="c">// person 未初始化</span>
+    <span class="nx">doSomething</span><span class="p">();</span>
+  <span class="p">}</span>
+
+  <span class="kd">function</span> <span class="nx">doSomething</span><span class="p">(</span><span class="nx">arg1</span><span class="p">,</span> <span class="nx">arg2</span><span class="p">) {</span>
+    <span class="kd">if</span> <span class="p">(</span><span class="nx">arg2</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">) {</span> <span class="c">// 不要用来检测参数</span>
+      <span class="nx">doSomethingElse</span><span class="p">();</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">person</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">);</span> <span class="c">// 不要直接使用 undefined</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="heading-sub" id="js-control">
+    <h3><em>- 控制语句 -</em></h3>
+  </div>
+  <div class="section" id="js-switch">
+    <div class="col">
+      <h4>switch 语句</h4>
+      <p>尽管语法相似，Javascript 中任何表达式都可以合法地用于 <code>case</code> 从句，但在其他语言中则必须使用原始值和常量。</p>
+      <ul>
+        <li><code>case</code> 相对 <code>switch</code> 缩进一个层级</li>
+        <li><code>case</code> 后的语句再缩进一个层级</li>
+        <li>分号 <code>:</code> 左边不要有空格，右边不要有语句</li>
+        <li>如果没有 <code>default</code> 就补充一个注释</li>
+      </ul>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="javascript">
+  <span class="c">/* Good */</span>
+  <span class="k">switch</span> <span class="p">(</span><span class="nx">conidion</span><span class="p">) {</span>
+    <span class="k">case</span> <span class="mi">0</span><span class="p">:</span>
+      ...
+      <span class="k">break;</span>
+    <span class="k">case</span> <span class="mi">1</span><span class="p">:</span>
+      ...
+      <span class="k">break;</span>
+    <span class="c">// no default</span>
+  <span class="p">}</span>
+
+  <span class="c">/* Bad */</span>
+  <span class="k">switch</span> <span class="p">(</span><span class="nx">conidion</span><span class="p">) {</span>
+  <span class="k">case</span> <span class="mi">0</span> <span class="p">:</span> ... <span class="k">break;</span>
+  <span class="k">case</span> <span class="mi">1</span> <span class="p">:</span>
+  ...
+  <span class="k">break;</span>
+  <span class="p">}</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="js-for">
+    <div class="col">
+      <h4>for 循环</h4>
+      <p>传统的 <code>for</code> 循环，是从 C 和 Java 继承而来。</p>
+      <ul>
+        <li>圆括号里的两个分号 <code>;</code> 不能省略。
+        <li>圆括号里的分号 <code>;</code> 右边保留一个空格</li>
+        <li>圆括号里的 <code>var</code> 声明建议提取出来</li>
+        <li><code>break</code> 和 <code>continue</code> 会改变循环的方向，尽量避免使用，但是不禁止</li>
+      </ul>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="javascript">
+  <span class="c">/* Good */</span>
+  <span class="k">var</span> <span class="nx">i</span><span>;</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">9</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">) {</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">i</span> <span class="o">===</span> <span class="mi">2</span><span class="p">) {</span>
+      <span class="nx">process</span><span class="p">();</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="c">/* Bad */</span>
+  <span class="k">for</span> <span class="p">(</span><span class="k">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="nx">i</span> <span class="o">&lt;</span><span class="mi">9</span><span class="p">) {</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">i</span> <span class="o">!==</span> <span class="mi">2</span><span class="p">) {</span>
+      <span class="kd">continue</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="nx">process</span><span class="p">();</span>
+    <span class="nx">i</span><span class="o">++</span><span class="p">;</span>
+  <span class="p">}</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="js-for-in">
+    <div class="col">
+      <h3>for-in 循环</h4>
+      <p><code>for-in</code> 循环不仅遍历对象的实例属性（instance property），同样还遍历从原型继承来的属性。</p>
+      <ul>
+        <li>用来遍历对象，不要用来遍历数组</li>
+        <li>建议与 <code>hasOwnProperty</code> 一起检测属性，除非你需要检查原型</li>
+      </ul>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="javascript">
+  <span class="c">/* Good */</span>
+  <span class="k">var</span> <span class="nx">prop</span><span class="p">;</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="nx">prop</span> <span class="k">in</span> <span class="nx">object</span><span class="p">) {</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">object</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">prop</span><span class="p">)) {</span>
+      <span class="k">console</span><span class="p">(</span><span class="nx">prop</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="c">/* Bad */</span>
+  <span class="k">var</span> <span class="nx">prop</span><span class="p">;</span>
+  <span class="k">var</span> <span class="nx">vals</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">];</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="nx">prop</span> <span class="k">in</span> <span class="nx">object</span><span class="p">) {</span>
+    <span class="k">console</span><span class="p">(</span><span class="nx">prop</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="nx">prop</span> <span class="k">in</span> <span class="nx">vals</span><span class="p">) {</span>
+    <span class="k">console</span><span class="p">(</span><span class="nx">prop</span><span class="p">);</span>
+  <span class="p">}</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="heading-sub" id="js-comment">
+    <h3><em>- 注释 -</em></h3>
+  </div>
+  <div class="section" id="js-comment-rule">
+    <div class="col">
+      <h3>注释规则</h4>
+      <ul>
+        <li>当代码不够清晰的时候使用注释，当代码很明了的时候不应当添加注释</li>
+        <li>注释不应该只是解释变量名称或者函数名称式的那种废话</li>
+        <li>当代码很难理解或者代码可能被误认为错误的代码的时候，需要添加注释</li>
+      </ul>
+    </div>
+  </div>
+  <div class="section" id="js-comment-single">
+    <div class="col">
+      <h4>单行注释</h4>
+      <p>单行注释以 <code>//</code> 开头。</p>
+      <ul>
+        <li>独占一行，用来解释下一行</li>
+        <li>注释之前最好有一行空行</li>
+        <li>缩进的层级与下一行代码保持一致</li>
+        <li><code>//</code> 后保留一个空格</li>
+        <li>尾部注释与代码之间至少有一个缩进</li>
+        <li>尾部注释太长的时候应该移到代码的上一行</li>
+      </ul>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="javascript">
+  <span class="c">// a comment</span>
+  <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+  <span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  <span class="c">// keep an indent</span>
+</code>
+      </pre>
+    </div>
+  </div>
+  <div class="section" id="js-comment-doc">
+    <div class="col">
+      <h4>文档注释</h4>
+      <p>遵循 <a href="http://usejsdoc.org/" target="_blank">JSDoc</a> 规范。</p>
+      <ul>
+        <li>应当对所有的方法和可能的返回值添加描述</li>
+        <li>对自定义的构造函数类型和期望的参数添加描述</li>
+        <li>对于包含对象或者方法的对象进行描述</li>
+      </ul>
+    </div>
+    <div class="col highlight">
+      <pre>
+<code class="javascript">
+  <span class="c">/**</span>
+  <span class="c"> * A module representing a jacket.</span>
+  <span class="c"> * </span>
+  <span class="c"> * @module jacket</span>
+  <span class="c"> * @author devi</span>
+  <span class="c"> */</span>
+</code>
+      </pre>
+    </div>
+  </div>
+
+
+
+  <footer class="footer">
+    <h3>Source</h3>
+    <p id="ref[0]"><a href="http://codeguide.bootcss.com/" target="_blank">Bootstrap 中文网</a> ( <a href="https://twitter.com/mdo" target="_blank">@mdo</a> )</p>
+    <br>
+    <h3>References</h3>
+    <div class="footer-wrap">
+      <p class="ref" id="ref[1]">
+        <span class="ref-num">[1]</span>
+        <a href="http://www.ruanyifeng.com/blog/2012/04/javascript_programming_style.html" target="_blank">Javascript 编程风格</a> —
+        <a class="ref-author" href="http://www.ruanyifeng.com/" target="_blank">@阮一峰</a>
+      </p>
+      <p class="ref" id="ref[2]">
+        <span class="ref-num">[2]</span>
+        <a href="https://github.com/necolas/idiomatic-css/tree/master/translations/zh-CN" target="_blank">Idiomatic CSS</a> —
+        <a class="ref-author" href="https://github.com/tslmy" target="_blank">@Tslmy</a>
+      </p>
+      <p class="ref" id="ref[3]">
+        <span class="ref-num">[3]</span>
+        <a href="http://jayli.github.io/maintainable.javascript/" target="_blank">《Maintainable Javascript》</a> —
+        <a class="ref-author" href="http://www.nczonline.net/blog/about/" target="_blank">@Nicholas</a>
+      </p>
+      <p class="ref" id="ref[4]">
+        <span class="ref-num">[4]</span>
+        <sup><a class="ref-trans" href="http://www.oschina.net/translate/about-html-semantics-front-end-architecture" target="_blank" title="关于语义化HTML以及前端架构的一点思考">[译文]</a></sup>
+        <a href="http://nicolasgallagher.com/about-html-semantics-front-end-architecture/" target="_blank">About HTML semantics and front-end architecture</a> —
+        <a class="ref-author" href="http://nicolasgallagher.com/" target="_blank">@Nicolas Gallagher</a>
+      </p>
+      <p class="ref" id="ref[5]">
+        <span class="ref-num">[5]</span>
+        <a href="http://cwt.weakow.com/handbook/overview" target="_blank">weakow 概览</a> —
+        <a class="ref-author" href="http://cwt.weakow.com/" target="_blank">@weakow</a>
+      </p>
+    </div>
+  </footer>
+
+</body>
+</html>
