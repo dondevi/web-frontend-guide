@@ -2,3 +2,4 @@
 
 - <https://dondevi.github.io/web-frontend-guide/style-guide/codestyle.html>
 - <https://dondevi.github.io/web-frontend-guide/style-guide/practice.html>
+- <https://dondevi.github.io/web-frontend-guide/study-guide/index.html>
