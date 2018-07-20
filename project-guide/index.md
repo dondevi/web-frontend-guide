@@ -160,10 +160,10 @@
 ## 流程篇 <small>Workflow</small>
 > 打造优质产品
 
-<details>
-  <summary>项目流程简图 <small>(点开，仅供参考)</small></summary>
-  <img src="./pm-flow-min.png" alt="项目流程简图">
-</details>
+
+![项目流程简图](https://dondevi.github.io/web-frontend-guide/project-guide/pm-flow-min.png)
+
+(上图仅供参考)
 
 
 ### 1. 了解项目 <abbr title="important">\*</abbr>
