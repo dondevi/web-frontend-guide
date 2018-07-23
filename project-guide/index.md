@@ -1,9 +1,9 @@
 ---
-    title: Web Front-end Project Guide
+    title: Web Front End Project Guide
     author: dondevi
     date: 2015-11-19
     update: 2017-04-17
-    update: 2018-07-20
+    update: 2018-07-23
 ---
 
 
@@ -18,10 +18,10 @@
   abbr { color: red; font-size: smaller; vertical-align: super; text-decoration: none; }
 </style>
 
-<!-- <script>
+<script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
   ga('create', 'UA-31356319-2', 'auto'); ga('send', 'pageview');
-</script> -->
+</script>
 
 
 
@@ -33,66 +33,7 @@
 
 
 
-<br>
-
-
-
-
-
-## 规范篇 <small>Convention</small>
-> 编写优雅代码
-
-
-### 1. 代码风格指南 <abbr title="important">\*</abbr>
-> 网址：<https://dondevi.github.io/web-frontend-guide/style-guide/codestyle.html>{:target="\_blank"}
-> <br> 参考：1 小时
-> <br> 要求：完整遍历，注重代码风格的意识和习惯
-
-
-### 2. 编程实践指南
-> 网址：<https://dondevi.github.io/web-frontend-guide/style-guide/practice.html>{:target="\_blank"}
-> <br> 参考：1 小时
-> <br> 要求：完整遍历
-
-- 界面层、业务层 和 数据层 分离
-- 业务层中：事件绑定、事件处理 和 业务逻辑 分离
-
-
-### 3. 文档注释规范
-> JSDoc：<http://usejsdoc.org>{:target="\_blank"}
-> <br> 参考：6 小时
-> <br> 要求：完整遍历
-
-
-### 5. 开发工具规约
-> Sublime Text: Perferences > Settings > User
-
-```javascript
-{
-  "rulers": [80],
-  "tab_size": 2,
-  "word_wrap": false,
-  "translate_tabs_to_spaces": true,
-  "ensure_newline_at_eof_on_save": true,
-  "trim_trailing_white_space_on_save": true
-}
-```
-
-
-
-
-
-
-
-
-
-
-<br><br><br>
-
-
-
-
-
+<br><br>
 
 
 
@@ -123,21 +64,26 @@
 ### 3. 开发环境 <abbr title="important">\*</abbr>
 
 1. [Node](https://nodejs.org/){:target="\_blank"} <sup><kbd>LTS</kbd></sup>
-    - `nvm`: <https://github.com/creationix/nvm>{:target="\_blank"} - <small>(win)</small>
-    - `n`: <https://github.com/tj/n>{:target="\_blank"} - <small>(linux)</small>
+    - [nvm](https://github.com/creationix/nvm){:target="\_blank"} - <small>(win)</small>
+    - [n](https://github.com/tj/n){:target="\_blank"} - <small>(linux)</small>
 
 2. [Webpack](https://webpack.js.org/){:target="\_blank"}
-    - `vue-cli`: <https://cli.vuejs.org/>{:target="\_blank"}
-    - `webpack-cli`: <https://webpack.js.org/api/cli/>{:target="\_blank"}
+    - [vue-cli](https://cli.vuejs.org/){:target="\_blank"}
+    - [webpack-cli](https://webpack.js.org/api/cli/){:target="\_blank"}
 
-3. Git / SVN
-    - TortoiseGit：<https://tortoisegit.org/download/>{:target="\_blank"}
-    - TortoiseSVN：<https://tortoisesvn.net/downloads.html>{:target="\_blank"}
+3. Remote Debug
+    - [Weinre](http://people.apache.org/~pmuellr/weinre-docs/latest/){:target="\_blank"}
 
-4. [Nginx](http://nginx.org/){:target="\_blank"}
+4. Git / SVN
+    - [TortoiseGit](https://tortoisegit.org/download/){:target="\_blank"}
+    - [TortoiseSVN](https://tortoisesvn.net/downloads.html){:target="\_blank"}
 
-5. [Cmder](http://cmder.net/){:target="\_blank"}
+5. HTTP Server
+    - [Nginx](http://nginx.org/){:target="\_blank"}
 
+6. HTTP Monitor
+    - [Fiddler](https://www.telerik.com/fiddler){:target="\_blank"}
+    - [Charles](https://www.charlesproxy.com/){:target="\_blank"}
 
 
 
@@ -163,7 +109,7 @@
 
 ![项目流程简图](https://dondevi.github.io/web-frontend-guide/project-guide/pm-flow-min.png)
 
-(上图仅供参考)
+*(上图仅供参考)*
 
 
 ### 1. 了解项目 <abbr title="important">\*</abbr>
@@ -199,10 +145,66 @@ Projects/
 ```
 
 ### 3. 执行任务 <abbr title="important">\*</abbr>
+> 通过项目管理系统
 
-- 开发界面
-- 接口联调
-- 自测修复
+
+
+
+
+
+
+
+<br><br><br>
+
+
+
+
+
+
+
+
+
+
+## 规范篇 <small>Convention</small>
+> 编写优雅代码
+
+
+### 1. 代码风格指南 <abbr title="important">\*</abbr>
+> 网址：<https://dondevi.github.io/web-frontend-guide/style-guide/codestyle.html>{:target="\_blank"}
+> <br> 参考：1 小时
+> <br> 要求：完整遍历，注重代码风格的意识和习惯
+
+
+### 2. 编程实践指南
+> 网址：<https://dondevi.github.io/web-frontend-guide/style-guide/practice.html>{:target="\_blank"}
+> <br> 参考：1 小时
+> <br> 要求：完整遍历
+
+- 界面层、业务层 和 数据层 分离
+- 业务层中：事件绑定、事件处理 和 业务逻辑 分离
+
+
+### 3. 文档注释规范
+> JSDoc：<http://usejsdoc.org>{:target="\_blank"}
+> <br> 参考：6 小时
+> <br> 要求：完整遍历
+
+
+### 5. 开发工具规约
+> Sublime Text：Perferences > Settings > User
+
+```javascript
+{
+  "rulers": [80],
+  "tab_size": 2,
+  "word_wrap": false,
+  "translate_tabs_to_spaces": true,
+  "ensure_newline_at_eof_on_save": true,
+  "trim_trailing_white_space_on_save": true
+}
+```
+
+
 
 
 
@@ -226,11 +228,11 @@ Projects/
 > 踩上前人肩膀
 
 
-### 1. 微信 H5 通用框架 <abbr title="important">\*</abbr>
+### 1. 微信 H5 通用框架 <abbr title="deprecated" style="color:gray">\*</abbr>
 > 文档：<https://dondevi.github.io/wechat-h5-framework/docs/index.html>{:target="\_blank"}
 > <br> 要求：熟练使用
 
-### 3. 一般代码结构
+### 2. 一般代码结构
 
 ```shell
 /code-h5/trunk/
